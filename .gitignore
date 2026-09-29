@@ -1,0 +1,79 @@
+# =========================
+# AeroRescue AI - Git Ignore
+# =========================
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+build/
+dist/
+coverage/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python tools / caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# YOLO / Ultralytics training outputs
+runs/
+weights/
+*.pt
+*.cache
+
+# Dataset (images + labels) — too large for git, keep locally or use Git LFS/DVC
+dataset_det/
+
+# YOLO cache files
+*.cache
+
+# Large datasets
+train/
+valid/
+test/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3

@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-foreground: #182333;
+  --color-hover: #e8edf3;
+  --color-canvas: #f5f7fa;
+  --color-shell: #ffffff;
+  --color-panel: #ffffff;
+  --color-inset: #f1f4f8;
+  --color-line: #dce2e9;
+  --color-line-strong: #b7c1ce;
+  --color-muted: #596579;
+  --color-secondary: #40516a;
+}
+
+@layer base {
+  :root { color-scheme: light; }
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: #182333;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select, textarea { font: inherit; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 3px;
+  }
+  input, textarea { caret-color: #2563eb; }
+  input::placeholder, textarea::placeholder { color: var(--color-muted); }
+  h1, h2, h3 { text-wrap: balance; }
+  th, td { font-variant-numeric: tabular-nums; }
+  th { text-align: start; }
+  ::selection { background: #dbeafe; color: #182333; }
+}
+
+@layer utilities {
+  .bg-geometric-grid {
+    background-color: var(--color-canvas);
+  }
+}
+
+/* Consistent scroll surfaces without competing with operational content. */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-shell);
+}
+::-webkit-scrollbar-thumb {
+  background: #b7c1ce;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #637183;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Preserve the map provider’s light cartography. */
+.leaflet-tile {
+  filter: none;
+}
+
+/* Solid action buttons and footage overlays retain their inverse contrast. */
+:is(.bg-red-600, .bg-red-500, .bg-rose-600, .bg-blue-600, .bg-green-600) {
+  color: #fff;
+}
+:is(.bg-red-600, .bg-red-500, .bg-rose-600, .bg-blue-600, .bg-green-600)
+  :is(.text-foreground, .text-muted, .text-secondary) {
+  color: #fff;
+}
+:is([class~="bg-black/70"], [class~="bg-black/80"], [class~="bg-black/60"],
+    [class~="bg-black/50"], .bg-black, .bg-slate-900, .bg-slate-950,
+    [class~="bg-slate-900/90"], [class~="bg-slate-950/90"]) {
+  color: #f8fafc;
+}
+:is([class~="bg-black/70"], [class~="bg-black/80"], [class~="bg-black/60"],
+    [class~="bg-black/50"], .bg-black)
+  :is(.text-foreground, .text-muted, .text-secondary) {
+  color: #f8fafc;
+}
+[class~="bg-slate-950/90"].text-sky-700 { color: #7dd3fc; }
+.bg-slate-700.text-foreground { color: #fff; }
+
+button:disabled { color: var(--color-muted); }
+
+.bg-slate-900.text-sky-700 { color: #7dd3fc; }
+
+/* Keep densely plotted entities readable; labels remain available on focus/hover. */
+.map-marker-label {
+  opacity: 0;
+  pointer-events: none;
+}
+.leaflet-marker-icon:hover .map-marker-label,
+.leaflet-marker-icon:focus .map-marker-label {
+  opacity: 1;
+}
+.leaflet-container { background: #e7edf0; }
+.leaflet-container img.leaflet-tile { max-width: none; max-height: none; }
