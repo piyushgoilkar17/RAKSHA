@@ -620,9 +620,9 @@ AeroRescue-AI/
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/piyush/AeroRescue-AI.git
+git clone https://github.com/piyushgoilkar17/RAKSHA.git
 
-cd AeroRescue-AI
+cd RAKSHA
 ```
 
 ## 2. Install dependencies
