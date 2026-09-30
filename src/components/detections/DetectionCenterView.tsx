@@ -22,7 +22,7 @@ export const DetectionCenterView: React.FC = () => {
   const [categoryFilter, setCategoryFilter] = useState<'ALL' | 'People' | 'Hazards'>('ALL');
   const [severityFilter, setSeverityFilter] = useState<string>('ALL');
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
-  const [rakshaFilter, setRakshaFilter] = useState<string>('ALL');
+  const [droneFilter, setDroneFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [minConfidence, setMinConfidence] = useState<number>(0);
 
@@ -84,7 +84,7 @@ export const DetectionCenterView: React.FC = () => {
 
       const newDetection: Detection = {
         detectionId: 'DET-' + Math.floor(1000 + Math.random() * 9000),
-        rakshaId: 'RAKSHA-01',
+        droneId: 'RAKSHA-01',
         category: result.category === 'Survivor' ? 'People' : 'Hazards',
         detectionType: result.label,
         severity: result.severity as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW',
@@ -114,7 +114,7 @@ export const DetectionCenterView: React.FC = () => {
     if (categoryFilter !== 'ALL' && det.category !== categoryFilter) return false;
     if (severityFilter !== 'ALL' && det.severity !== severityFilter) return false;
     if (statusFilter !== 'ALL' && det.verificationStatus !== statusFilter) return false;
-    if (rakshaFilter !== 'ALL' && det.rakshaId !== rakshaFilter) return false;
+    if (droneFilter !== 'ALL' && det.droneId !== droneFilter) return false;
     if (det.confidence < minConfidence) return false;
 
     if (searchQuery.trim()) {
@@ -122,7 +122,7 @@ export const DetectionCenterView: React.FC = () => {
       const match =
         det.detectionId.toLowerCase().includes(q) ||
         det.detectionType.toLowerCase().includes(q) ||
-        det.rakshaId.toLowerCase().includes(q);
+        det.droneId.toLowerCase().includes(q);
       if (!match) return false;
     }
 
@@ -232,7 +232,7 @@ export const DetectionCenterView: React.FC = () => {
             <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted" />
             <input
               type="text"
-              placeholder="Search by ID, type, or raksha..."
+              placeholder="Search by ID, type, or drone..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-8 pr-3 py-1.5 bg-inset border border-line rounded text-foreground focus:outline-none focus:border-red-500 text-xs font-mono"
@@ -278,15 +278,15 @@ export const DetectionCenterView: React.FC = () => {
           </select>
 
           <select
-            value={rakshaFilter}
-            onChange={(e) => setRakshaFilter(e.target.value)}
+            value={droneFilter}
+            onChange={(e) => setDroneFilter(e.target.value)}
             className="bg-inset border border-line text-secondary py-1.5 px-2.5 rounded focus:outline-none focus:border-red-500 font-mono"
           >
-            <option value="ALL">All Rakshas</option>
-            {commandStore.rakshas.map((d) => {
+            <option value="ALL">All Drones</option>
+            {commandStore.drones.map((d) => {
               return (
-                <option key={d.rakshaId} value={d.rakshaId}>
-                  {d.rakshaId}
+                <option key={d.droneId} value={d.droneId}>
+                  {d.droneId}
                 </option>
               );
             })}
@@ -337,7 +337,7 @@ export const DetectionCenterView: React.FC = () => {
                     {det.severity}
                   </span>
                 </div>
-                <span className="text-xs text-muted font-mono">{det.rakshaId}</span>
+                <span className="text-xs text-muted font-mono">{det.droneId}</span>
               </div>
 
               {cardImage ? (

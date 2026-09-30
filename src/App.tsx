@@ -8,7 +8,7 @@ import { Header } from './components/layout/Header';
 import { Sidebar, NavigationPage } from './components/layout/Sidebar';
 import { OverviewDashboard } from './components/dashboard/OverviewDashboard';
 import { DisasterMap } from './components/map/DisasterMap';
-import { RakshaFleetView } from './components/rakshas/RakshaFleetView';
+import { DroneFleetView } from './components/drones/DroneFleetView';
 import { LiveVisionView } from './components/vision/LiveVisionView';
 import { DetectionCenterView } from './components/detections/DetectionCenterView';
 import { SurvivorsView } from './components/survivors/SurvivorsView';
@@ -19,17 +19,17 @@ import { ReportsView } from './components/reports/ReportsView';
 import { AnalyticsView } from './components/analytics/AnalyticsView';
 import { SettingsGatewayView } from './components/settings/SettingsGatewayView';
 import { commandStore } from './services/store';
-import { Survivor, Hazard, Raksha } from './types';
+import { Survivor, Hazard, Drone } from './types';
 
 export default function App() {
   const [, setTick] = useState(0);
   const [currentPage, setCurrentPage] = useState<NavigationPage>('overview');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [activeVisionRakshaId, setActiveVisionRakshaId] = useState<string>('RAKSHA-01');
+  const [activeVisionDroneId, setActiveVisionDroneId] = useState<string>('RAKSHA-01');
 
   // Selected entities for drilldown on map
   const [selectedEntity, setSelectedEntity] = useState<{
-    type: 'survivor' | 'hazard' | 'raksha';
+    type: 'survivor' | 'hazard' | 'drone';
     id: string;
   } | null>(null);
 
@@ -49,12 +49,12 @@ export default function App() {
     setSelectedEntity({ type: 'hazard', id: hazard.hazardId });
   };
 
-  const handleSelectRaksha = (raksha: Raksha) => {
-    setSelectedEntity({ type: 'raksha', id: raksha.rakshaId });
+  const handleSelectDrone = (drone: Drone) => {
+    setSelectedEntity({ type: 'drone', id: drone.droneId });
   };
 
-  const handleOpenLiveVision = (rakshaId: string) => {
-    setActiveVisionRakshaId(rakshaId);
+  const handleOpenLiveVision = (droneId: string) => {
+    setActiveVisionDroneId(droneId);
     setCurrentPage('detections');
   };
 
@@ -103,7 +103,7 @@ export default function App() {
                 <DisasterMap
                   onSelectSurvivor={handleSelectSurvivor}
                   onSelectHazard={handleSelectHazard}
-                  onSelectRaksha={handleSelectRaksha}
+                  onSelectDrone={handleSelectDrone}
                   selectedEntity={selectedEntity}
                   heightClass="h-[calc(100dvh-12rem)] min-h-[500px]"
                 />
@@ -111,10 +111,10 @@ export default function App() {
             </div>
           )}
 
-          {currentPage === 'rakshas' && (
-            <RakshaFleetView
-              onOpenLiveVision={(rakshaId) => {
-                setActiveVisionRakshaId(rakshaId);
+          {currentPage === 'drones' && (
+            <DroneFleetView
+              onOpenLiveVision={(droneId) => {
+                setActiveVisionDroneId(droneId);
                 setCurrentPage('navigation');
               }}
             />

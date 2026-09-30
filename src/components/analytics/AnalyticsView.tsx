@@ -16,7 +16,7 @@ export const AnalyticsView: React.FC = () => {
 
   // Chart 1: Survivors Detected Per Mission
   const survivorMissionData = missions.map((m) => {
-    const survCount = survivors.filter((s) => s.rakshaId === m.assignedRakshaIds[0]).length;
+    const survCount = survivors.filter((s) => s.droneId === m.assignedDroneIds[0]).length;
     return {
       name: m.missionId,
       survivors: survCount,
@@ -41,9 +41,9 @@ export const AnalyticsView: React.FC = () => {
     { range: '90-99%', count: 12 },
   ];
 
-  // Chart 4: Raksha Flight Hours
-  const rakshaFlightData = commandStore.rakshas.map((d) => ({
-    name: d.rakshaId,
+  // Chart 4: Drone Flight Hours
+  const droneFlightData = commandStore.drones.map((d) => ({
+    name: d.droneId,
     minutes: d.flightTimeMinutes,
     km: d.distanceTravelledKm,
   }));
@@ -137,7 +137,7 @@ export const AnalyticsView: React.FC = () => {
           </div>
         </div>
 
-        {/* Chart 4: Raksha Flight Endurance & Distance */}
+        {/* Chart 4: Drone Flight Endurance & Distance */}
         <div className="bg-panel border border-line rounded p-4">
           <div className="text-xs font-bold text-foreground uppercase mb-3 flex items-center justify-between">
             <span>Fleet Flight Endurance (Minutes Flown)</span>
@@ -145,7 +145,7 @@ export const AnalyticsView: React.FC = () => {
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={rakshaFlightData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <BarChart data={droneFlightData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid stroke="#dce2e9" strokeDasharray="3 3" />
                 <XAxis dataKey="name" stroke="#444" tick={{ fill: '#596579', fontSize: 11 }} />
                 <YAxis stroke="#444" tick={{ fill: '#596579', fontSize: 11 }} />

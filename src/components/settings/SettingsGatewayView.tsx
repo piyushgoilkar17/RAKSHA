@@ -4,10 +4,10 @@ import {
   Send, RefreshCw, CheckCircle2, Code2, Terminal
 } from 'lucide-react';
 import { commandStore } from '../../services/store';
-import { rakshaGateway } from '../../services/rakshaGateway';
+import { droneGateway } from '../../services/droneGateway';
 
 export const SettingsGatewayView: React.FC = () => {
-  const [targetRakshaId, setTargetRakshaId] = useState('RAKSHA-01');
+  const [targetDroneId, setTargetDroneId] = useState('RAKSHA-01');
   const [testLat, setTestLat] = useState('45.4390');
   const [testLon, setTestLon] = useState('12.3280');
   const [testAlt, setTestAlt] = useState('48');
@@ -17,7 +17,7 @@ export const SettingsGatewayView: React.FC = () => {
 
   const samplePayload = {
     timestamp: new Date().toISOString(),
-    raksha_id: targetRakshaId,
+    drone_id: targetDroneId,
     telemetry: {
       latitude: parseFloat(testLat) || 45.4390,
       longitude: parseFloat(testLon) || 12.3280,
@@ -38,7 +38,7 @@ export const SettingsGatewayView: React.FC = () => {
 
   const handleInjectTelemetry = (e: React.FormEvent) => {
     e.preventDefault();
-    rakshaGateway.pushTelemetry(targetRakshaId, {
+    droneGateway.pushTelemetry(targetDroneId, {
       latitude: parseFloat(testLat) || 45.4390,
       longitude: parseFloat(testLon) || 12.3280,
       altitude: parseFloat(testAlt) || 48,
@@ -64,7 +64,7 @@ export const SettingsGatewayView: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-muted mt-0.5 font-sans">
-            Clean hardware abstraction layer for physical raksha fleet telemetry, MAVLink bridges, and test injections
+            Clean hardware abstraction layer for physical drone fleet telemetry, MAVLink bridges, and test injections
           </p>
         </div>
       </div>
@@ -119,13 +119,13 @@ export const SettingsGatewayView: React.FC = () => {
             <div>
               <label className="block text-muted text-xs uppercase font-bold mb-1">Target Airframe:</label>
               <select
-                value={targetRakshaId}
-                onChange={(e) => setTargetRakshaId(e.target.value)}
+                value={targetDroneId}
+                onChange={(e) => setTargetDroneId(e.target.value)}
                 className="w-full px-2 py-1.5 bg-inset border border-line rounded text-foreground"
               >
-                {commandStore.rakshas.map((d) => (
-                  <option key={d.rakshaId} value={d.rakshaId}>
-                    {d.rakshaId} ({d.name})
+                {commandStore.drones.map((d) => (
+                  <option key={d.droneId} value={d.droneId}>
+                    {d.droneId} ({d.name})
                   </option>
                 ))}
               </select>
@@ -178,7 +178,7 @@ export const SettingsGatewayView: React.FC = () => {
               className="w-full py-2 bg-red-600 hover:bg-red-500 text-foreground font-bold rounded flex items-center justify-center gap-1.5 shadow-lg transition-colors"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>{injectSuccess ? 'Telemetry Dispatched to Store!' : 'Transmit Packet to Raksha Store'}</span>
+              <span>{injectSuccess ? 'Telemetry Dispatched to Store!' : 'Transmit Packet to Drone Store'}</span>
             </button>
           </form>
         </div>
@@ -190,7 +190,7 @@ export const SettingsGatewayView: React.FC = () => {
               <span className="flex items-center gap-1.5">
                 <Code2 className="w-4 h-4 text-green-700" /> LIVE TELEMETRY PAYLOAD (JSON CONTRACT)
               </span>
-              <span className="text-xs text-secondary font-bold">TOPIC: rescue/rakshas/+/telemetry</span>
+              <span className="text-xs text-secondary font-bold">TOPIC: rescue/drones/+/telemetry</span>
             </div>
 
             <div className="p-3 bg-shell rounded border border-line overflow-x-auto text-[13px] text-green-700 font-mono">
@@ -201,7 +201,7 @@ export const SettingsGatewayView: React.FC = () => {
           <div className="mt-3 p-2.5 bg-inset rounded border border-line text-[13px] text-muted flex items-center justify-between">
             <span className="flex items-center gap-2">
               <Terminal className="w-3.5 h-3.5 text-red-700" />
-              <span>WebSocket Gateway URI: <strong className="text-secondary">wss://api.raksha.ai/v1/stream</strong></span>
+              <span>WebSocket Gateway URI: <strong className="text-secondary">wss://api.aerorescue.ai/v1/stream</strong></span>
             </span>
             <span className="text-green-700 font-bold">STATUS: LISTENING</span>
           </div>

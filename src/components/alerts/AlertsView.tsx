@@ -103,7 +103,7 @@ export const AlertsView: React.FC = () => {
                   </span>
                   <span className="font-bold text-foreground text-sm">{alert.alertId}</span>
                   <span className="text-muted">|</span>
-                  <span className="text-red-700 font-bold">{alert.rakshaId}</span>
+                  <span className="text-red-700 font-bold">{alert.droneId}</span>
                   <span className="text-muted text-xs">{alert.createdAt}</span>
                 </div>
 

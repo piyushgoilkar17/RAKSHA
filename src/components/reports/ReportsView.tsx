@@ -13,7 +13,7 @@ export const ReportsView: React.FC = () => {
   const criticalSurvivors = survivors.filter((s) => s.priorityLevel === 'CRITICAL' && s.rescueStatus !== 'Rescued');
   const rescuedSurvivors = survivors.filter((s) => s.rescueStatus === 'Rescued');
   const hazards = commandStore.hazards.filter((h) => h.status !== 'Resolved');
-  const rakshas = commandStore.rakshas;
+  const drones = commandStore.drones;
   const totalSurveyedKm2 = commandStore.missions.reduce((acc, m) => acc + m.areaCoveredKm2, 0);
 
   const currentDateStr = new Date().toLocaleString();
@@ -29,10 +29,10 @@ Timestamp: ${currentDateStr}
 =====================================================
 
 1. EXECUTIVE SUMMARY:
-Autonomous raksha reconnaissance squadron completed continuous aerial sweeps over Adyar Basin and Velachery Sectors. Multi-spectrum AI edge detection identified ${survivors.length} survivor clusters, including ${criticalSurvivors.length} critical priority incidents requiring swift amphibious evacuation. ${hazards.length} environmental hazard zones (active fires, live powerlines, and unstable buildings) have been geofenced.
+Autonomous drone reconnaissance squadron completed continuous aerial sweeps over Adyar Basin and Velachery Sectors. Multi-spectrum AI edge detection identified ${survivors.length} survivor clusters, including ${criticalSurvivors.length} critical priority incidents requiring swift amphibious evacuation. ${hazards.length} environmental hazard zones (active fires, live powerlines, and unstable buildings) have been geofenced.
 
 2. OPERATIONAL STATISTICS:
-- Active Reconnaissance Rakshas: ${rakshas.filter(d => d.status === 'ACTIVE').length}/${rakshas.length}
+- Active Reconnaissance Drones: ${drones.filter(d => d.status === 'ACTIVE').length}/${drones.length}
 - Total Surveyed Footprint: ${totalSurveyedKm2.toFixed(1)} km²
 - Total Survivor Casualties Logged: ${survivors.length}
 - Rescued & Stabilized: ${rescuedSurvivors.length}
@@ -40,7 +40,7 @@ Autonomous raksha reconnaissance squadron completed continuous aerial sweeps ove
 - Environmental Hazards Active: ${hazards.length}
 
 3. SQUADRON FLEET READINESS:
-${rakshas.map(d => `* ${d.rakshaId}: Status ${d.status}, Battery ${d.battery}%, Nav ${d.navMode}, Area ${d.zone}`).join('\n')}
+${drones.map(d => `* ${d.droneId}: Status ${d.status}, Battery ${d.battery}%, Nav ${d.navMode}, Area ${d.zone}`).join('\n')}
 
 4. TACTICAL RECOMMENDATIONS:
 - Dispatch NDRF Inflatable Zodiac boats along Safe Corridor Bravo.
@@ -66,7 +66,7 @@ ${rakshas.map(d => `* ${d.rakshaId}: Status ${d.status}, Battery ${d.battery}%, 
         activeHazards: hazards.length,
         areaSurveyedKm2: totalSurveyedKm2,
       },
-      rakshas: commandStore.rakshas,
+      drones: commandStore.drones,
       survivors: commandStore.survivors,
       hazards: commandStore.hazards,
       alerts: commandStore.alerts,
@@ -76,7 +76,7 @@ ${rakshas.map(d => `* ${d.rakshaId}: Status ${d.status}, Battery ${d.battery}%, 
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `Raksha_SITREP_${Date.now()}.json`;
+    link.download = `Drone_SITREP_${Date.now()}.json`;
     link.click();
     URL.revokeObjectURL(url);
     setDownloadSuccess(true);
@@ -154,7 +154,7 @@ ${rakshas.map(d => `* ${d.rakshaId}: Status ${d.status}, Battery ${d.battery}%, 
             1. EXECUTIVE OPERATIONAL SUMMARY
           </h3>
           <p className="text-xs text-secondary font-sans leading-relaxed">
-            Autonomous raksha reconnaissance squadron completed continuous aerial sweeps over Adyar Basin and Velachery Sectors. Multi-spectrum AI edge detection identified <strong className="text-foreground">{survivors.length} survivor clusters</strong>, including <strong className="text-red-700">{criticalSurvivors.length} critical priority incidents</strong> requiring swift amphibious evacuation. <strong className="text-foreground">{hazards.length} environmental hazard zones</strong> (active fires, live powerlines, and unstable buildings) have been geofenced. Real-time telemetry confirmed nominal GNSS and Edge SLAM synchronization across all active airframes.
+            Autonomous drone reconnaissance squadron completed continuous aerial sweeps over Adyar Basin and Velachery Sectors. Multi-spectrum AI edge detection identified <strong className="text-foreground">{survivors.length} survivor clusters</strong>, including <strong className="text-red-700">{criticalSurvivors.length} critical priority incidents</strong> requiring swift amphibious evacuation. <strong className="text-foreground">{hazards.length} environmental hazard zones</strong> (active fires, live powerlines, and unstable buildings) have been geofenced. Real-time telemetry confirmed nominal GNSS and Edge SLAM synchronization across all active airframes.
           </p>
         </div>
 
@@ -184,20 +184,20 @@ ${rakshas.map(d => `* ${d.rakshaId}: Status ${d.status}, Battery ${d.battery}%, 
           </div>
         </div>
 
-        {/* Section 3: Raksha Fleet Status */}
+        {/* Section 3: Drone Fleet Status */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />
             3. AIR SQUADRON READINESS SUMMARY
           </h3>
           <div className="space-y-1.5">
-            {rakshas.map((d) => (
+            {drones.map((d) => (
               <div
-                key={d.rakshaId}
+                key={d.droneId}
                 className="p-2 bg-inset rounded border border-line-strong flex items-center justify-between"
               >
                 <div>
-                  <strong className="text-foreground">{d.rakshaId}</strong> ({d.name}) — Status: <span className="text-green-700 font-bold">{d.status}</span>
+                  <strong className="text-foreground">{d.droneId}</strong> ({d.name}) — Status: <span className="text-green-700 font-bold">{d.status}</span>
                 </div>
                 <div className="text-secondary">
                   Battery: <strong className="text-foreground">{d.battery}%</strong> | Alt: {d.altitude}m | Nav: {d.navMode}

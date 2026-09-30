@@ -1,10 +1,10 @@
-# 🚁 Raksha AI
+# 🚁 AeroRescue AI
 
-### AI-Powered Autonomous Raksha System for Disaster Search & Rescue
+### AI-Powered Autonomous Drone System for Disaster Search & Rescue
 
 > **Detect • Locate • Assess • Prioritize • Alert • Respond**
 
-Raksha AI is an AI-powered autonomous raksha-based disaster response platform designed to assist emergency response teams in locating survivors, detecting hazards, and generating real-time situational awareness in disaster-affected areas.
+AeroRescue AI is an AI-powered autonomous raksha-based disaster response platform designed to assist emergency response teams in locating survivors, detecting hazards, and generating real-time situational awareness in disaster-affected areas.
 
 The system combines **RGB and thermal vision, edge AI, GPS, IMU, autonomous navigation, sensor fusion, geo-tagged mapping, and real-time cloud communication** to improve victim discovery time while reducing the exposure of human responders to dangerous environments.
 
@@ -30,17 +30,17 @@ During the first critical hours after a disaster, responders need rapid informat
 * Which routes are safe
 * Where rescue resources should be deployed
 
-**Raksha AI** addresses this challenge through autonomous aerial monitoring and on-device AI-based detection.
+**AeroRescue AI** addresses this challenge through autonomous aerial monitoring and on-device AI-based detection.
 
 ---
 
 # 🎯 Objectives
 
-The primary objectives of Raksha AI are to:
+The primary objectives of AeroRescue AI are to:
 
 * Detect survivors using RGB and thermal cameras.
 * Identify disaster-related hazards.
-* Provide real-time raksha telemetry.
+* Provide real-time drone telemetry.
 * Create geo-tagged survivor and hazard maps.
 * Prioritize potential rescue targets.
 * Generate automatic emergency alerts.
@@ -81,7 +81,7 @@ The primary objectives of Raksha AI are to:
               └──────────────┼──────────────┘
                              ▼
                  ┌───────────────────────┐
-                 │   Raksha Data Gateway  │
+                 │   Drone Data Gateway  │
                  └───────────┬───────────┘
                              │
                              ▼
@@ -93,7 +93,7 @@ The primary objectives of Raksha AI are to:
                              │
                              ▼
               ┌─────────────────────────────┐
-              │   Raksha AI Dashboard   │
+              │   AeroRescue AI Dashboard   │
               └─────────────────────────────┘
                              │
               ┌──────────────┼──────────────┐
@@ -105,11 +105,11 @@ The primary objectives of Raksha AI are to:
 
 # 🚨 Key Features
 
-## 1. 🛰️ Autonomous Raksha Monitoring
+## 1. 🛰️ Autonomous Drone Monitoring
 
-The system is designed to monitor disaster-affected regions using autonomous rakshas.
+The system is designed to monitor disaster-affected regions using autonomous drones.
 
-The raksha can provide:
+The drone can provide:
 
 * GPS position
 * Altitude
@@ -125,7 +125,7 @@ The raksha can provide:
 
 ## 2. 🤖 Edge AI Detection
 
-AI inference is designed to run **locally on the raksha/edge computing device** rather than depending entirely on cloud processing.
+AI inference is designed to run **locally on the drone/edge computing device** rather than depending entirely on cloud processing.
 
 The system can be designed to detect:
 
@@ -152,7 +152,7 @@ The system can be designed to detect:
 
 # 🌡️ RGB + Thermal Vision
 
-Raksha AI uses two complementary vision sources.
+AeroRescue AI uses two complementary vision sources.
 
 ### RGB Camera
 
@@ -182,8 +182,8 @@ Combining RGB and thermal information can improve detection reliability in chall
 
 The command dashboard provides a map containing:
 
-* Raksha locations
-* Raksha flight paths
+* Drone locations
+* Drone flight paths
 * Survivor locations
 * Hazard locations
 * Search areas
@@ -201,7 +201,7 @@ Every detection can contain:
 Latitude
 Longitude
 Timestamp
-Raksha ID
+Drone ID
 Mission ID
 Detection Type
 Confidence
@@ -222,7 +222,7 @@ Example:
 
 Possible survivor detected near unstable structure.
 
-Raksha: RAKSHA-02
+Drone: RAKSHA-02
 Confidence: 94%
 Location: 13.xxxx, 80.xxxx
 Status: AI DETECTED
@@ -246,7 +246,7 @@ Responders can:
 
 # 🧑‍🚒 Survivor Prioritization
 
-Raksha AI provides an AI-assisted rescue priority score.
+AeroRescue AI provides an AI-assisted rescue priority score.
 
 The priority can consider:
 
@@ -277,19 +277,19 @@ Immediate human verification and rescue assessment
 
 ---
 
-# 🛩️ Raksha Fleet Management
+# 🛩️ Drone Fleet Management
 
-The dashboard supports multiple rakshas.
+The dashboard supports multiple drones.
 
 Example fleet:
 
-| Raksha    | Mission        | Status  | Battery |
+| Drone    | Mission        | Status  | Battery |
 | -------- | -------------- | ------- | ------: |
 | RAKSHA-01 | Search Zone A  | Active  |     78% |
 | RAKSHA-02 | Search Zone B  | Active  |     64% |
 | RAKSHA-03 | Thermal Search | Standby |     91% |
 
-Possible raksha states:
+Possible drone states:
 
 * Active
 * Standby
@@ -319,7 +319,7 @@ Navigation using:
 
 ### Obstacle Avoidance
 
-The raksha can be designed to identify and avoid obstacles such as:
+The drone can be designed to identify and avoid obstacles such as:
 
 * Buildings
 * Trees
@@ -338,7 +338,7 @@ A major design principle is that **AI inference should not depend on continuous 
                    │
                    ▼
           ┌─────────────────┐
-          │ Autonomous Raksha│
+          │ Autonomous Drone│
           └────────┬────────┘
                    │
           ┌────────▼────────┐
@@ -377,7 +377,7 @@ Used for secure user authentication and role-based access.
 
 Stores:
 
-* Raksha information
+* Drone information
 * Telemetry
 * Missions
 * Detections
@@ -414,7 +414,7 @@ The dashboard provides:
 
 ### Overview
 
-* Active rakshas
+* Active drones
 * Survivors detected
 * Critical survivors
 * Hazards detected
@@ -425,7 +425,7 @@ The dashboard provides:
 
 Real-time visualization of:
 
-* Rakshas
+* Drones
 * Survivors
 * Hazards
 * Routes
@@ -439,7 +439,7 @@ Displays:
 * Confidence
 * Location
 * Timestamp
-* Raksha
+* Drone
 * Image
 * Severity
 
@@ -448,7 +448,7 @@ Displays:
 Allows operators to:
 
 * Create missions
-* Assign rakshas
+* Assign drones
 * Define search areas
 * Generate waypoints
 * Monitor mission progress
@@ -465,12 +465,12 @@ Displays mission and detection statistics.
 
 # 🧪 Simulation Mode
 
-Since the prototype may initially operate without physical rakshas, Raksha AI includes a **Simulation Mode**.
+Since the prototype may initially operate without physical drones, AeroRescue AI includes a **Simulation Mode**.
 
 The simulation provides:
 
-* 3 virtual rakshas
-* Moving raksha locations
+* 3 virtual drones
+* Moving drone locations
 * Simulated telemetry
 * Survivor detections
 * Hazard detections
@@ -498,7 +498,7 @@ The dashboard provides analytics such as:
 * Hazards by category
 * Hazards by severity
 * Detection confidence
-* Raksha flight hours
+* Drone flight hours
 * Area surveyed
 * Critical alerts
 * Mission completion rate
@@ -513,7 +513,7 @@ The system can generate mission reports containing:
 * Mission details
 * Disaster type
 * Surveyed area
-* Raksha information
+* Drone information
 * Survivor detections
 * Hazard summary
 * Critical alerts
@@ -533,7 +533,7 @@ The system supports role-based access.
 | Role              | Access                               |
 | ----------------- | ------------------------------------ |
 | Admin             | Full system access                   |
-| Mission Commander | Missions, rakshas, alerts and reports |
+| Mission Commander | Missions, drones, alerts and reports |
 | Responder         | Survivors, hazards and rescue status |
 | Viewer            | Read-only dashboard                  |
 
@@ -575,7 +575,7 @@ Designed for integration with:
 * NVIDIA Jetson
 * Other embedded AI computing platforms
 
-### Raksha Technologies
+### Drone Technologies
 
 * GPS
 * IMU
@@ -590,7 +590,7 @@ Designed for integration with:
 # 📂 Project Structure
 
 ```text
-Raksha-AI/
+AeroRescue-AI/
 │
 ├── src/
 │   ├── components/
@@ -673,7 +673,7 @@ Future development can include:
 
 ### Hardware Integration
 
-* Real autonomous raksha
+* Real autonomous drone
 * Raspberry Pi / NVIDIA Jetson
 * Flight controller integration
 * Real-time telemetry
@@ -712,7 +712,7 @@ Future development can include:
 
 * Automatic disaster severity estimation
 * Dynamic rescue route planning
-* Multi-raksha coordination
+* Multi-drone coordination
 * Victim clustering
 * Search-area optimization
 * Predictive hazard analysis
@@ -721,7 +721,7 @@ Future development can include:
 
 # 🎯 Expected Impact
 
-Raksha AI aims to improve disaster response by:
+AeroRescue AI aims to improve disaster response by:
 
 * ⏱️ Reducing survivor discovery time
 * 🛡️ Improving responder safety
@@ -730,13 +730,13 @@ Raksha AI aims to improve disaster response by:
 * 📍 Providing precise survivor locations
 * 🚨 Prioritizing critical situations
 * 🌐 Supporting communication-constrained environments
-* 🚁 Enabling scalable multi-raksha operations
+* 🚁 Enabling scalable multi-drone operations
 
 ---
 
 # ⚠️ Safety & Limitations
 
-Raksha AI is a **decision-support and research prototype**.
+AeroRescue AI is a **decision-support and research prototype**.
 
 AI detections may contain false positives or false negatives. Critical information should therefore be verified by trained emergency personnel before operational decisions are made.
 
@@ -750,6 +750,6 @@ The system is intended to assist—not replace—qualified emergency response te
 
 Our vision is to develop a deployable autonomous aerial intelligence platform capable of rapidly surveying disaster zones, identifying survivors and hazards, and providing emergency teams with reliable, geo-tagged information when every minute matters.
 
-### **Raksha AI**
+### **AeroRescue AI**
 
 > **See Faster. Respond Smarter. Save Lives.** 🚁

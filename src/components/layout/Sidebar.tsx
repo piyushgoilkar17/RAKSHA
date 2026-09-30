@@ -9,7 +9,7 @@ import { commandStore } from '../../services/store';
 export type NavigationPage = 
   | 'overview'
   | 'map'
-  | 'rakshas'
+  | 'drones'
   | 'detections'
   | 'survivors'
   | 'hazards'
@@ -32,7 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   collapsed,
   onToggleCollapse,
 }) => {
-  const activeRakshasCount = commandStore.rakshas.filter((d) => d.status === 'ACTIVE').length;
+  const activeDronesCount = commandStore.drones.filter((d) => d.status === 'ACTIVE').length;
   const criticalSurvivorsCount = commandStore.survivors.filter(
     (s) => s.priorityLevel === 'CRITICAL' && s.rescueStatus !== 'Rescued'
   ).length;
@@ -44,7 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems: { id: NavigationPage; label: string; icon: React.ComponentType<{ className?: string }>; badge?: number | string; badgeColor?: string }[] = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'map', label: 'Live Disaster Map', icon: Map },
-    { id: 'rakshas', label: 'Raksha Fleet', icon: Plane, badge: `${activeRakshasCount} Live`, badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200/50' },
+    { id: 'drones', label: 'Drone Fleet', icon: Plane, badge: `${activeDronesCount} Live`, badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200/50' },
     { id: 'detections', label: 'AI Detection Center', icon: Eye, badge: commandStore.detections.length, badgeColor: 'bg-sky-50 text-sky-700 border-sky-200' },
     { id: 'survivors', label: 'Survivors', icon: Users, badge: criticalSurvivorsCount > 0 ? `${criticalSurvivorsCount} Crit` : undefined, badgeColor: 'bg-rose-50 text-rose-700 border-rose-600' },
     { id: 'hazards', label: 'Hazard Intelligence', icon: AlertOctagon, badge: criticalHazardsCount > 0 ? criticalHazardsCount : undefined, badgeColor: 'bg-amber-50 text-amber-700 border-amber-600' },
@@ -133,9 +133,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
             <div>
-              <div className="text-[13px] text-secondary">Rakshas Active</div>
+              <div className="text-[13px] text-secondary">Drones Active</div>
               <div className="text-base font-mono font-bold text-foreground leading-none mt-0.5">
-                0{activeRakshasCount}{' '}
+                0{activeDronesCount}{' '}
                 <span className="text-xs text-green-700 font-bold tracking-wider">
                   NOMINAL
                 </span>

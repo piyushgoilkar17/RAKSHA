@@ -7,18 +7,18 @@ import { commandStore } from '../../services/store';
 import { createSvgImageDataUrl } from '../../services/seedData';
 
 interface LiveVisionViewProps {
-  initialRakshaId?: string;
+  initialDroneId?: string;
 }
 
-export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialRakshaId = 'RAKSHA-01' }) => {
-  const [activeRakshaId, setActiveRakshaId] = useState<string>(initialRakshaId);
+export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialDroneId = 'RAKSHA-01' }) => {
+  const [activeDroneId, setActiveDroneId] = useState<string>(initialDroneId);
   const [showBoundingBoxes, setShowBoundingBoxes] = useState(true);
   const [showTelemetryHUD, setShowTelemetryHUD] = useState(true);
   const [thermalPalette, setThermalPalette] = useState<'IRONBOW' | 'WHITE_HOT' | 'RAINBOW'>('IRONBOW');
   const [snapshotSuccess, setSnapshotSuccess] = useState(false);
 
-  const raksha = commandStore.rakshas.find((d) => d.rakshaId === activeRakshaId) || commandStore.rakshas[0];
-  const activeDetections = commandStore.detections.filter((det) => det.rakshaId === raksha?.rakshaId);
+  const drone = commandStore.drones.find((d) => d.droneId === activeDroneId) || commandStore.drones[0];
+  const activeDetections = commandStore.detections.filter((det) => det.droneId === drone?.droneId);
 
   const handleCaptureSnapshot = () => {
     setSnapshotSuccess(true);
@@ -39,20 +39,20 @@ export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialRakshaId 
 
           <div className="h-4 w-[1px] bg-hover" />
 
-          {/* Raksha Selector Pills */}
+          {/* Drone Selector Pills */}
           <div className="flex items-center gap-1.5">
-            <span className="text-muted text-xs font-bold uppercase">RAKSHA FEED:</span>
-            {commandStore.rakshas.map((d) => (
+            <span className="text-muted text-xs font-bold uppercase">DRONE FEED:</span>
+            {commandStore.drones.map((d) => (
               <button
-                key={d.rakshaId}
-                onClick={() => setActiveRakshaId(d.rakshaId)}
+                key={d.droneId}
+                onClick={() => setActiveDroneId(d.droneId)}
                 className={`px-2.5 py-1 rounded font-bold transition-all ${
-                  activeRakshaId === d.rakshaId
+                  activeDroneId === d.droneId
                     ? 'bg-red-600 text-foreground'
                     : 'bg-inset text-muted hover:text-foreground border border-line'
                 }`}
               >
-                {d.rakshaId}
+                {d.droneId}
               </button>
             ))}
           </div>
@@ -109,7 +109,7 @@ export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialRakshaId 
             {/* Aerial Simulated Disaster Feed */}
             <img
               src={createSvgImageDataUrl('survivor')}
-              alt="Simulated Aerial RGB Raksha Feed"
+              alt="Simulated Aerial RGB Drone Feed"
               className="w-full h-full object-cover"
             />
 
@@ -127,9 +127,9 @@ export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialRakshaId 
                     <div>FOV: 84° WIDE</div>
                   </div>
                   <div className="bg-black/70 p-1.5 rounded border border-line text-xs text-right">
-                    <div>ALT: {raksha?.altitude} M AGL</div>
-                    <div>SPD: {raksha?.speed} M/S</div>
-                    <div>HDG: {raksha?.heading}°</div>
+                    <div>ALT: {drone?.altitude} M AGL</div>
+                    <div>SPD: {drone?.speed} M/S</div>
+                    <div>HDG: {drone?.heading}°</div>
                   </div>
                 </div>
 
@@ -144,8 +144,8 @@ export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialRakshaId 
 
                 <div className="flex justify-between items-end z-10">
                   <div className="bg-black/70 p-1.5 rounded border border-line text-xs">
-                    <div>LAT: {raksha?.latitude.toFixed(5)}° N</div>
-                    <div>LON: {raksha?.longitude.toFixed(5)}° E</div>
+                    <div>LAT: {drone?.latitude.toFixed(5)}° N</div>
+                    <div>LON: {drone?.longitude.toFixed(5)}° E</div>
                   </div>
                   <div className="bg-black/70 p-1.5 rounded border border-line text-xs text-right text-green-700 font-bold">
                     SLAM LOCALIZATION LOCKED
@@ -182,7 +182,7 @@ export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialRakshaId 
             {/* Simulated Radiometric FLIR Thermal Feed */}
             <img
               src={createSvgImageDataUrl('thermal_person')}
-              alt="Simulated Radiometric FLIR Raksha Thermal Feed"
+              alt="Simulated Radiometric FLIR Drone Thermal Feed"
               className="w-full h-full object-cover"
             />
 
@@ -237,20 +237,20 @@ export const LiveVisionView: React.FC<LiveVisionViewProps> = ({ initialRakshaId 
       <div className="bg-panel border border-line rounded p-4 font-mono text-xs">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-center border-b border-line pb-3 mb-3">
           <div>
-            <div className="text-muted text-[11px] uppercase font-bold">ACTIVE RAKSHA</div>
-            <div className="text-foreground font-bold text-sm">{raksha?.rakshaId}</div>
+            <div className="text-muted text-[11px] uppercase font-bold">ACTIVE DRONE</div>
+            <div className="text-foreground font-bold text-sm">{drone?.droneId}</div>
           </div>
           <div>
             <div className="text-muted text-[11px] uppercase font-bold">MISSION ID</div>
-            <div className="text-foreground font-bold text-sm">{raksha?.currentMissionId}</div>
+            <div className="text-foreground font-bold text-sm">{drone?.currentMissionId}</div>
           </div>
           <div>
             <div className="text-muted text-[11px] uppercase font-bold">GPS COORDINATES</div>
-            <div className="text-green-700 font-bold text-xs">{raksha?.latitude.toFixed(5)}°N, {raksha?.longitude.toFixed(5)}°E</div>
+            <div className="text-green-700 font-bold text-xs">{drone?.latitude.toFixed(5)}°N, {drone?.longitude.toFixed(5)}°E</div>
           </div>
           <div>
             <div className="text-muted text-[11px] uppercase font-bold">ALTITUDE / SPEED</div>
-            <div className="text-foreground font-bold text-sm">{raksha?.altitude}m @ {raksha?.speed}m/s</div>
+            <div className="text-foreground font-bold text-sm">{drone?.altitude}m @ {drone?.speed}m/s</div>
           </div>
           <div>
             <div className="text-muted text-[11px] uppercase font-bold">AI CONFIDENCE PEAK</div>

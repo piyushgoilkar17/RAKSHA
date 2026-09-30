@@ -1,4 +1,4 @@
-import { Raksha, Mission, Survivor, Hazard, Alert, Detection, Waypoint, UserProfile } from '../types';
+import { Drone, Mission, Survivor, Hazard, Alert, Detection, Waypoint, UserProfile } from '../types';
 
 // Helper to generate SVG placeholder data URLs for realistic aerial disaster and FLIR thermal imagery
 export function createSvgImageDataUrl(type: 'survivor' | 'thermal_person' | 'flood' | 'fire' | 'damage' | 'electrical' | 'debris'): string {
@@ -138,7 +138,7 @@ export const initialUsers: UserProfile[] = [
   {
     uid: 'u_adm_01',
     name: 'Chief Insp. Rajesh Sharma',
-    email: 'ops@raksha.internal',
+    email: 'ops@aerorescue.internal',
     role: 'ADMIN',
     callsign: 'HQ-DISPATCH',
   },
@@ -166,7 +166,7 @@ export const initialMissions: Mission[] = [
     disasterType: 'Flood + Structural Damage',
     status: 'ACTIVE',
     priority: 'CRITICAL',
-    assignedRakshaIds: ['RAKSHA-01', 'RAKSHA-02', 'RAKSHA-03'],
+    assignedDroneIds: ['RAKSHA-01', 'RAKSHA-02', 'RAKSHA-03'],
     searchPattern: 'LAWNMOWER_GRID',
     startTime: '2026-09-06T20:30:00Z',
     searchArea: [
@@ -186,7 +186,7 @@ export const initialMissions: Mission[] = [
     disasterType: 'Flood + Structural Damage',
     status: 'COMPLETED',
     priority: 'HIGH',
-    assignedRakshaIds: ['RAKSHA-01'],
+    assignedDroneIds: ['RAKSHA-01'],
     searchPattern: 'PERIMETER_RECON',
     startTime: '2026-09-06T14:00:00Z',
     endTime: '2026-09-06T16:45:00Z',
@@ -203,9 +203,9 @@ export const initialMissions: Mission[] = [
   },
 ];
 
-export const initialRakshas: Raksha[] = [
+export const initialDrones: Drone[] = [
   {
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     name: 'AeroScout Alpha',
     model: 'Skydio X2-D Edge (NVIDIA Jetson Orin Nano)',
     status: 'ACTIVE',
@@ -228,7 +228,7 @@ export const initialRakshas: Raksha[] = [
     lastSeen: 'Just now',
   },
   {
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     name: 'AeroSurvey Bravo',
     model: 'DJI Matrice 350 RTK (Raspberry Pi 5 AI Edge Kit)',
     status: 'ACTIVE',
@@ -251,7 +251,7 @@ export const initialRakshas: Raksha[] = [
     lastSeen: 'Just now',
   },
   {
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     name: 'AeroThermal Charlie',
     model: 'Teledyne FLIR SIRAS (Edge Coral TPU Dual-Core)',
     status: 'ACTIVE',
@@ -279,7 +279,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-014',
     detectionId: 'DET-9921',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     latitude: 45.4422,
     longitude: 12.3288,
@@ -297,7 +297,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-012',
     detectionId: 'DET-9892',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     latitude: 45.4245,
     longitude: 12.3432,
@@ -315,7 +315,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-009',
     detectionId: 'DET-9810',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     latitude: 45.4528,
     longitude: 12.3105,
@@ -333,7 +333,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-018',
     detectionId: 'DET-9950',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     latitude: 45.4378,
     longitude: 12.3215,
@@ -351,7 +351,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-007',
     detectionId: 'DET-9755',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     latitude: 45.4195,
     longitude: 12.3350,
@@ -369,7 +369,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-021',
     detectionId: 'DET-9982',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     latitude: 45.4562,
     longitude: 12.3190,
@@ -387,7 +387,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-004',
     detectionId: 'DET-9640',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     latitude: 45.4350,
     longitude: 12.3305,
@@ -405,7 +405,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-005',
     detectionId: 'DET-9685',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     latitude: 45.4290,
     longitude: 12.3500,
@@ -423,7 +423,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-002',
     detectionId: 'DET-9512',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     latitude: 45.4455,
     longitude: 12.3050,
@@ -441,7 +441,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-001',
     detectionId: 'DET-9480',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     latitude: 45.4305,
     longitude: 12.3170,
@@ -459,7 +459,7 @@ export const initialSurvivors: Survivor[] = [
   {
     survivorId: 'S-025',
     detectionId: 'DET-9994',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     latitude: 45.4215,
     longitude: 12.3240,
@@ -480,7 +480,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-001',
     detectionId: 'DET-H101',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     hazardType: 'Electrical line',
     severity: 'CRITICAL',
@@ -496,7 +496,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-002',
     detectionId: 'DET-H102',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     hazardType: 'Fire',
     severity: 'CRITICAL',
@@ -512,7 +512,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-003',
     detectionId: 'DET-H103',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     hazardType: 'Flood',
     severity: 'CRITICAL',
@@ -528,7 +528,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-004',
     detectionId: 'DET-H104',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     hazardType: 'Unstable building',
     severity: 'CRITICAL',
@@ -544,7 +544,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-005',
     detectionId: 'DET-H105',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     hazardType: 'Damaged structure',
     severity: 'HIGH',
@@ -560,7 +560,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-006',
     detectionId: 'DET-H106',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     hazardType: 'Smoke',
     severity: 'HIGH',
@@ -576,7 +576,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-007',
     detectionId: 'DET-H107',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     hazardType: 'Debris',
     severity: 'HIGH',
@@ -592,7 +592,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-008',
     detectionId: 'DET-H108',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     hazardType: 'Flood',
     severity: 'HIGH',
@@ -608,7 +608,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-009',
     detectionId: 'DET-H109',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     hazardType: 'Landslide',
     severity: 'HIGH',
@@ -624,7 +624,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-010',
     detectionId: 'DET-H110',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     hazardType: 'Chemical hazard',
     severity: 'HIGH',
@@ -640,7 +640,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-011',
     detectionId: 'DET-H111',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     hazardType: 'Electrical line',
     severity: 'MEDIUM',
@@ -656,7 +656,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-012',
     detectionId: 'DET-H112',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     hazardType: 'Debris',
     severity: 'MEDIUM',
@@ -672,7 +672,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-013',
     detectionId: 'DET-H113',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     hazardType: 'Damaged structure',
     severity: 'MEDIUM',
@@ -688,7 +688,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-014',
     detectionId: 'DET-H114',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     hazardType: 'Flood',
     severity: 'LOW',
@@ -704,7 +704,7 @@ export const initialHazards: Hazard[] = [
   {
     hazardId: 'HAZ-015',
     detectionId: 'DET-H115',
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     missionId: 'MSN-2026-09A',
     hazardType: 'Unstable building',
     severity: 'CRITICAL',
@@ -729,7 +729,7 @@ export const initialAlerts: Alert[] = [
     recommendation: 'Immediate rescue boat dispatch required. Coordinate power grid isolation.',
     latitude: 45.4422,
     longitude: 12.3288,
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     status: 'NEW',
     createdAt: '6 mins ago',
   },
@@ -739,10 +739,10 @@ export const initialAlerts: Alert[] = [
     alertType: 'FIRE_HAZARD',
     severity: 'CRITICAL',
     message: 'Electrical transformer fire erupting near Saidapet Sector C residential perimeter.',
-    recommendation: 'Reroute rakshas to safe altitude. Notify fire station #4 and dispatch foam truck.',
+    recommendation: 'Reroute drones to safe altitude. Notify fire station #4 and dispatch foam truck.',
     latitude: 45.4515,
     longitude: 12.3160,
-    rakshaId: 'RAKSHA-03',
+    droneId: 'RAKSHA-03',
     status: 'ACKNOWLEDGED',
     createdAt: '12 mins ago',
     acknowledgedAt: '10 mins ago',
@@ -757,7 +757,7 @@ export const initialAlerts: Alert[] = [
     recommendation: 'Issue immediate emergency warning to boat rescue crews in Sector 2.',
     latitude: 45.4418,
     longitude: 12.3295,
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     status: 'NEW',
     createdAt: '8 mins ago',
   },
@@ -770,7 +770,7 @@ export const initialAlerts: Alert[] = [
     recommendation: 'Reroute SDRF convoy through elevated GST Road interchange.',
     latitude: 45.4255,
     longitude: 12.3400,
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     status: 'ASSIGNED',
     createdAt: '18 mins ago',
     acknowledgedAt: '15 mins ago',
@@ -785,7 +785,7 @@ export const initialAlerts: Alert[] = [
     recommendation: 'Barricade lane from both ends; mark as red zone on command map.',
     latitude: 45.4435,
     longitude: 12.3245,
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     status: 'NEW',
     createdAt: '25 mins ago',
   },
@@ -807,7 +807,7 @@ export const removedDemoDetectionIds = new Set(['DET-H101', 'DET-H102', 'DET-989
 export const initialDetections: Detection[] = [
   {
     detectionId: 'DET-9921',
-    rakshaId: 'RAKSHA-01',
+    droneId: 'RAKSHA-01',
     missionId: 'MSN-2026-09A',
     category: 'People',
     detectionType: 'Survivor Group',
@@ -823,7 +823,7 @@ export const initialDetections: Detection[] = [
   },
   {
     detectionId: 'DET-H103',
-    rakshaId: 'RAKSHA-02',
+    droneId: 'RAKSHA-02',
     missionId: 'MSN-2026-09A',
     category: 'Hazards',
     detectionType: 'Floodwater Surge',

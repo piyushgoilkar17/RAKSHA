@@ -1,10 +1,10 @@
 import { 
-  Raksha, Mission, Survivor, Hazard, Alert, Detection, Waypoint, 
+  Drone, Mission, Survivor, Hazard, Alert, Detection, Waypoint, 
   UserProfile, UserRole, ConnectivityStatus, MissionReport,
-  SurvivorPriority, RescueStatus, VerificationStatus, AlertStatus, RakshaStatus
+  SurvivorPriority, RescueStatus, VerificationStatus, AlertStatus, DroneStatus
 } from '../types';
 import { 
-  initialUsers, initialMissions, initialRakshas, 
+  initialUsers, initialMissions, initialDrones, 
   initialSurvivors, initialHazards, initialAlerts, 
   initialWaypoints, initialDetections, removedDemoDetectionIds 
 } from './seedData';
@@ -21,7 +21,7 @@ class CommandStore {
   public offlineQueue: Array<{ action: string; payload: any; timestamp: string }> = [];
 
   public missions: Mission[] = [...initialMissions];
-  public rakshas: Raksha[] = [...initialRakshas];
+  public drones: Drone[] = [...initialDrones];
   public survivors: Survivor[] = [...initialSurvivors];
   public hazards: Hazard[] = [...initialHazards];
   public alerts: Alert[] = [...initialAlerts];
@@ -37,7 +37,7 @@ class CommandStore {
       summary: {
         disasterType: 'Flood + Structural Damage',
         surveyedAreaKm2: 12.6,
-        activeRakshasCount: 3,
+        activeDronesCount: 3,
         survivorsDetected: 27,
         criticalSurvivors: 8,
         hazardsDetected: 14,
@@ -75,7 +75,7 @@ class CommandStore {
     try {
       const state = {
         missions: this.missions,
-        rakshas: this.rakshas,
+        drones: this.drones,
         survivors: this.survivors,
         hazards: this.hazards,
         alerts: this.alerts,
@@ -85,7 +85,7 @@ class CommandStore {
         connectivity: this.connectivity,
         currentUser: this.currentUser,
       };
-      localStorage.setItem('raksha_state_v1', JSON.stringify(state));
+      localStorage.setItem('aerorescue_state_v1', JSON.stringify(state));
     } catch {
       // ignore storage write errors in private browsing/sandbox
     }
@@ -93,12 +93,12 @@ class CommandStore {
 
   private loadFromStorage() {
     try {
-      const data = localStorage.getItem('raksha_state_v1');
+      const data = localStorage.getItem('aerorescue_state_v1');
       if (data) {
         const parsed = JSON.parse(data);
-        if (parsed.rakshas && parsed.missions) {
+        if (parsed.drones && parsed.missions) {
           this.missions = parsed.missions;
-          this.rakshas = parsed.rakshas;
+          this.drones = parsed.drones;
           this.survivors = parsed.survivors || this.survivors;
           this.hazards = parsed.hazards || this.hazards;
           this.alerts = parsed.alerts || this.alerts;
@@ -118,7 +118,7 @@ class CommandStore {
 
   public resetToSeed() {
     this.missions = JSON.parse(JSON.stringify(initialMissions));
-    this.rakshas = JSON.parse(JSON.stringify(initialRakshas));
+    this.drones = JSON.parse(JSON.stringify(initialDrones));
     this.survivors = JSON.parse(JSON.stringify(initialSurvivors));
     this.hazards = JSON.parse(JSON.stringify(initialHazards));
     this.alerts = JSON.parse(JSON.stringify(initialAlerts));
@@ -157,27 +157,27 @@ class CommandStore {
     this.notify();
   }
 
-  // --- Raksha Operations ---
-  public updateRakshaTelemetry(rakshaId: string, partial: Partial<Raksha>) {
-    this.rakshas = this.rakshas.map((d) => (d.rakshaId === rakshaId ? { ...d, ...partial } : d));
+  // --- Drone Operations ---
+  public updateDroneTelemetry(droneId: string, partial: Partial<Drone>) {
+    this.drones = this.drones.map((d) => (d.droneId === droneId ? { ...d, ...partial } : d));
     this.notify();
   }
 
-  public setRakshaStatus(rakshaId: string, status: RakshaStatus) {
-    this.checkOffline('SET_RAKSHA_STATUS', { rakshaId, status });
-    this.rakshas = this.rakshas.map((d) => (d.rakshaId === rakshaId ? { ...d, status } : d));
+  public setDroneStatus(droneId: string, status: DroneStatus) {
+    this.checkOffline('SET_DRONE_STATUS', { droneId, status });
+    this.drones = this.drones.map((d) => (d.droneId === droneId ? { ...d, status } : d));
     this.notify();
   }
 
-  public setRakshaNavMode(rakshaId: string, navMode: Raksha['navMode']) {
-    this.checkOffline('SET_NAV_MODE', { rakshaId, navMode });
-    this.rakshas = this.rakshas.map((d) => (d.rakshaId === rakshaId ? { ...d, navMode } : d));
+  public setDroneNavMode(droneId: string, navMode: Drone['navMode']) {
+    this.checkOffline('SET_NAV_MODE', { droneId, navMode });
+    this.drones = this.drones.map((d) => (d.droneId === droneId ? { ...d, navMode } : d));
     this.notify();
   }
 
-  public assignRakshaMission(rakshaId: string, missionId: string) {
-    this.checkOffline('ASSIGN_RAKSHA_MISSION', { rakshaId, missionId });
-    this.rakshas = this.rakshas.map((d) => (d.rakshaId === rakshaId ? { ...d, currentMissionId: missionId } : d));
+  public assignDroneMission(droneId: string, missionId: string) {
+    this.checkOffline('ASSIGN_DRONE_MISSION', { droneId, missionId });
+    this.drones = this.drones.map((d) => (d.droneId === droneId ? { ...d, currentMissionId: missionId } : d));
     this.notify();
   }
 
@@ -261,7 +261,7 @@ class CommandStore {
       const newSurvivor: Survivor = {
         survivorId: `S-${Math.floor(100 + Math.random() * 900)}`,
         detectionId: newDet.detectionId,
-        rakshaId: detection.rakshaId,
+        droneId: detection.droneId,
         missionId: detection.missionId,
         latitude: detection.latitude,
         longitude: detection.longitude,
@@ -274,7 +274,7 @@ class CommandStore {
         detectedAt: 'Just now',
         imageUrl: detection.imageUrl,
         thermalImageUrl: detection.thermalImageUrl || detection.imageUrl,
-        notes: `AI edge detection from ${detection.rakshaId}`,
+        notes: `AI edge detection from ${detection.droneId}`,
       };
       this.survivors = [newSurvivor, ...this.survivors];
 
@@ -287,14 +287,14 @@ class CommandStore {
           recommendation: 'Immediate rescue team dispatch. Check nearby hazards.',
           latitude: detection.latitude,
           longitude: detection.longitude,
-          rakshaId: detection.rakshaId,
+          droneId: detection.droneId,
         });
       }
     } else {
       const newHazard: Hazard = {
         hazardId: `HAZ-${Math.floor(100 + Math.random() * 900)}`,
         detectionId: newDet.detectionId,
-        rakshaId: detection.rakshaId,
+        droneId: detection.droneId,
         missionId: detection.missionId,
         hazardType: (detection.detectionType as any) || 'Flood',
         severity: detection.severity,
@@ -314,11 +314,11 @@ class CommandStore {
           detectionId: newDet.detectionId,
           alertType: 'FIRE_HAZARD',
           severity: 'CRITICAL',
-          message: `Critical hazard (${detection.detectionType}) spotted by ${detection.rakshaId}.`,
+          message: `Critical hazard (${detection.detectionType}) spotted by ${detection.droneId}.`,
           recommendation: 'Verify immediately and reroute nearby rescue operations.',
           latitude: detection.latitude,
           longitude: detection.longitude,
-          rakshaId: detection.rakshaId,
+          droneId: detection.droneId,
         });
       }
     }

@@ -13,7 +13,7 @@ def main():
         imgsz=640,
         batch=16,
         project="runs/detect",
-        name="raksha_person"
+        name="aerorescue_person"
     )
 
 if __name__ == "__main__":

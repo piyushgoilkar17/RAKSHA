@@ -6,13 +6,13 @@ import {
 } from 'lucide-react';
 import { calculateRescueRoute, RoutePoint } from '../../services/rescueRouting';
 import { commandStore } from '../../services/store';
-import { Raksha, Survivor, Hazard, Waypoint } from '../../types';
+import { Drone, Survivor, Hazard, Waypoint } from '../../types';
 
 interface DisasterMapProps {
   onSelectSurvivor?: (survivor: Survivor) => void;
   onSelectHazard?: (hazard: Hazard) => void;
-  onSelectRaksha?: (raksha: Raksha) => void;
-  selectedEntity?: { type: 'survivor' | 'hazard' | 'raksha'; id: string } | null;
+  onSelectDrone?: (drone: Drone) => void;
+  selectedEntity?: { type: 'survivor' | 'hazard' | 'drone'; id: string } | null;
   heightClass?: string;
 }
 
@@ -26,7 +26,7 @@ function proposedHQ(): RoutePoint {
 
 function fitOperationalArea(map: L.Map) {
   const points = [
-    ...commandStore.rakshas,
+    ...commandStore.drones,
     ...commandStore.survivors,
     ...commandStore.hazards,
     proposedHQ(),
@@ -44,14 +44,14 @@ function fitOperationalArea(map: L.Map) {
 export const DisasterMap: React.FC<DisasterMapProps> = ({
   onSelectSurvivor,
   onSelectHazard,
-  onSelectRaksha,
+  onSelectDrone,
   selectedEntity,
   heightClass = 'h-full min-h-[500px]',
 }) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const layersRef = useRef<{
-    rakshas: L.LayerGroup;
+    drones: L.LayerGroup;
     survivors: L.LayerGroup;
     hazards: L.LayerGroup;
     zones: L.LayerGroup;
@@ -60,7 +60,7 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
   } | null>(null);
 
   const [activeLayers, setActiveLayers] = useState({
-    rakshas: true,
+    drones: true,
     survivors: true,
     hazards: true,
     zones: true,
@@ -70,7 +70,7 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
 
   const [inspectedSurvivor, setInspectedSurvivor] = useState<Survivor | null>(null);
   const [inspectedHazard, setInspectedHazard] = useState<Hazard | null>(null);
-  const [inspectedRaksha, setInspectedRaksha] = useState<Raksha | null>(null);
+  const [inspectedDrone, setInspectedDrone] = useState<Drone | null>(null);
 
   const [hq, setHQ] = useState<RoutePoint>(proposedHQ);
   const [routeTargetId, setRouteTargetId] = useState(() =>
@@ -102,7 +102,7 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
     }).addTo(map);
 
     // Layer groups
-    const rakshaGroup = L.layerGroup().addTo(map);
+    const droneGroup = L.layerGroup().addTo(map);
     const survivorGroup = L.layerGroup().addTo(map);
     const hazardGroup = L.layerGroup().addTo(map);
     const zoneGroup = L.layerGroup().addTo(map);
@@ -110,7 +110,7 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
     const pathGroup = L.layerGroup().addTo(map);
 
     layersRef.current = {
-      rakshas: rakshaGroup,
+      drones: droneGroup,
       survivors: survivorGroup,
       hazards: hazardGroup,
       zones: zoneGroup,
@@ -182,34 +182,34 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
     const layers = layersRef.current;
     if (!map || !layers) return;
 
-    // 1. Rakshas Layer
-    layers.rakshas.clearLayers();
-    if (activeLayers.rakshas) {
-      commandStore.rakshas.forEach((raksha) => {
-        const isSelected = selectedEntity?.type === 'raksha' && selectedEntity.id === raksha.rakshaId;
+    // 1. Drones Layer
+    layers.drones.clearLayers();
+    if (activeLayers.drones) {
+      commandStore.drones.forEach((drone) => {
+        const isSelected = selectedEntity?.type === 'drone' && selectedEntity.id === drone.droneId;
         const iconHtml = `
           <div class="relative flex items-center justify-center">
             <div class="absolute w-9 h-9 rounded-full bg-sky-500/30 animate-ping"></div>
             <div class="w-8 h-8 rounded-full ${
-              raksha.status === 'ACTIVE' ? 'bg-sky-500 text-black' : 'bg-slate-700 text-foreground'
-            } border-2 ${isSelected ? 'border-amber-400 ring-2 ring-amber-400' : 'border-white'} flex items-center justify-center font-bold text-xs shadow-lg transform transition-transform" style="transform: rotate(${raksha.heading}deg)">
+              drone.status === 'ACTIVE' ? 'bg-sky-500 text-black' : 'bg-slate-700 text-foreground'
+            } border-2 ${isSelected ? 'border-amber-400 ring-2 ring-amber-400' : 'border-white'} flex items-center justify-center font-bold text-xs shadow-lg transform transition-transform" style="transform: rotate(${drone.heading}deg)">
               ▲
             </div>
             <div class="map-marker-label absolute -bottom-4 bg-slate-950/90 text-sky-700 font-mono text-[11px] px-1 rounded border border-slate-700 whitespace-nowrap">
-              ${raksha.rakshaId} • ${raksha.battery}%
+              ${drone.droneId} • ${drone.battery}%
             </div>
           </div>
         `;
-        const marker = L.marker([raksha.latitude, raksha.longitude], {
+        const marker = L.marker([drone.latitude, drone.longitude], {
           icon: L.divIcon({ html: iconHtml, className: 'raksha-marker', iconSize: [36, 36], iconAnchor: [18, 18] }),
         });
         marker.on('click', () => {
-          setInspectedRaksha(raksha);
+          setInspectedDrone(drone);
           setInspectedSurvivor(null);
           setInspectedHazard(null);
-          if (onSelectRaksha) onSelectRaksha(raksha);
+          if (onSelectDrone) onSelectDrone(drone);
         });
-        marker.addTo(layers.rakshas);
+        marker.addTo(layers.drones);
       });
     }
 
@@ -248,7 +248,7 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
           setInspectedSurvivor(survivor);
           if (!isRescued) setRouteTargetId(survivor.survivorId);
           setInspectedHazard(null);
-          setInspectedRaksha(null);
+          setInspectedDrone(null);
           if (onSelectSurvivor) onSelectSurvivor(survivor);
         });
         marker.addTo(layers.survivors);
@@ -320,7 +320,7 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
         marker.on('click', () => {
           setInspectedHazard(hazard);
           setInspectedSurvivor(null);
-          setInspectedRaksha(null);
+          setInspectedDrone(null);
           if (onSelectHazard) onSelectHazard(hazard);
         });
         marker.addTo(layers.hazards);
@@ -389,12 +389,12 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
           LAYERS:
         </span>
         <button
-          onClick={() => setActiveLayers((p) => ({ ...p, rakshas: !p.rakshas }))}
+          onClick={() => setActiveLayers((p) => ({ ...p, drones: !p.drones }))}
           className={`px-2 py-0.5 rounded transition-colors ${
-            activeLayers.rakshas ? 'bg-hover border border-line-strong text-foreground font-bold' : 'bg-inset text-muted'
+            activeLayers.drones ? 'bg-hover border border-line-strong text-foreground font-bold' : 'bg-inset text-muted'
           }`}
         >
-          ▲ Rakshas ({commandStore.rakshas.length})
+          ▲ Drones ({commandStore.drones.length})
         </button>
         <button
           onClick={() => setActiveLayers((p) => ({ ...p, survivors: !p.survivors }))}
@@ -551,7 +551,7 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
             <div className="grid grid-cols-2 gap-1 text-xs font-mono text-muted">
               <div>Confidence: <span className="text-foreground font-bold">{inspectedSurvivor.confidence}%</span></div>
               <div>Estimated People: <span className="text-foreground font-bold">{inspectedSurvivor.peopleCount}</span></div>
-              <div>Detected By: <span className="text-secondary font-bold">{inspectedSurvivor.rakshaId}</span></div>
+              <div>Detected By: <span className="text-secondary font-bold">{inspectedSurvivor.droneId}</span></div>
               <div>Time: <span className="text-secondary">{inspectedSurvivor.detectedAt}</span></div>
             </div>
           </div>
@@ -670,8 +670,8 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
               <span className="font-bold text-red-700">{inspectedHazard.confidence}%</span>
             </div>
             <div className="flex items-center justify-between bg-inset p-2 rounded border border-line">
-              <span className="text-muted">Detecting Raksha:</span>
-              <span className="font-bold text-foreground">{inspectedHazard.rakshaId}</span>
+              <span className="text-muted">Detecting Drone:</span>
+              <span className="font-bold text-foreground">{inspectedHazard.droneId}</span>
             </div>
             <div className="flex items-center justify-between bg-inset p-2 rounded border border-line">
               <span className="text-muted">Hazard Danger Radius:</span>
@@ -707,69 +707,69 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
         </div>
       )}
 
-      {/* Inspection Drawer for Raksha */}
-      {inspectedRaksha && (
+      {/* Inspection Drawer for Drone */}
+      {inspectedDrone && (
         <div className="absolute top-3 right-3 bottom-3 w-80 md:w-96 z-20 bg-panel/95 backdrop-blur-lg border border-line rounded shadow-2xl p-4 overflow-y-auto flex flex-col text-foreground animate-in fade-in slide-in-from-right duration-200">
           <div className="flex items-center justify-between border-b border-line pb-2 mb-3">
             <div className="flex items-center gap-2">
               <span className="px-2 py-0.5 rounded bg-hover border border-line-strong text-foreground font-mono font-bold text-xs">
-                {inspectedRaksha.rakshaId}
+                {inspectedDrone.droneId}
               </span>
-              <span className="text-xs font-bold text-foreground font-mono">{inspectedRaksha.name}</span>
+              <span className="text-xs font-bold text-foreground font-mono">{inspectedDrone.name}</span>
             </div>
             <button
-              onClick={() => setInspectedRaksha(null)}
+              onClick={() => setInspectedDrone(null)}
               className="p-1 text-muted hover:text-foreground rounded hover:bg-hover"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="text-[13px] font-mono text-muted mb-2">{inspectedRaksha.model}</div>
+          <div className="text-[13px] font-mono text-muted mb-2">{inspectedDrone.model}</div>
 
           <div className="space-y-2 text-xs font-mono mb-4">
             <div className="flex items-center justify-between bg-inset p-2 rounded border border-line">
               <span className="text-muted">Status / Mode:</span>
-              <span className="text-green-700 font-bold">{inspectedRaksha.status} • {inspectedRaksha.navMode}</span>
+              <span className="text-green-700 font-bold">{inspectedDrone.status} • {inspectedDrone.navMode}</span>
             </div>
             <div className="flex items-center justify-between bg-inset p-2 rounded border border-line">
               <span className="text-muted">Battery Level:</span>
-              <span className={`font-bold ${inspectedRaksha.battery > 30 ? 'text-green-700' : 'text-red-700'}`}>
-                {inspectedRaksha.battery}%
+              <span className={`font-bold ${inspectedDrone.battery > 30 ? 'text-green-700' : 'text-red-700'}`}>
+                {inspectedDrone.battery}%
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-inset p-2 rounded border border-line">
                 <div className="text-muted text-xs">ALTITUDE</div>
-                <div className="text-foreground font-bold text-sm">{inspectedRaksha.altitude} m</div>
+                <div className="text-foreground font-bold text-sm">{inspectedDrone.altitude} m</div>
               </div>
               <div className="bg-inset p-2 rounded border border-line">
                 <div className="text-muted text-xs">SPEED</div>
-                <div className="text-foreground font-bold text-sm">{inspectedRaksha.speed} m/s</div>
+                <div className="text-foreground font-bold text-sm">{inspectedDrone.speed} m/s</div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-inset p-2 rounded border border-line">
                 <div className="text-muted text-xs">GPS FIX</div>
-                <div className="text-green-700 font-bold text-xs">{inspectedRaksha.gpsStatus}</div>
+                <div className="text-green-700 font-bold text-xs">{inspectedDrone.gpsStatus}</div>
               </div>
               <div className="bg-inset p-2 rounded border border-line">
                 <div className="text-muted text-xs">IMU STATUS</div>
-                <div className="text-green-700 font-bold text-xs">{inspectedRaksha.imuStatus}</div>
+                <div className="text-green-700 font-bold text-xs">{inspectedDrone.imuStatus}</div>
               </div>
             </div>
             <div className="bg-inset p-2 rounded border border-line text-[13px]">
               <div className="text-muted text-xs">ASSIGNED ZONE</div>
-              <div className="text-foreground">{inspectedRaksha.zone}</div>
+              <div className="text-foreground">{inspectedDrone.zone}</div>
             </div>
           </div>
 
           <div className="mt-auto pt-3 border-t border-line flex gap-2">
             <button
               onClick={() => {
-                commandStore.setRakshaStatus(inspectedRaksha.rakshaId, 'RETURNING');
-                commandStore.setRakshaNavMode(inspectedRaksha.rakshaId, 'RETURN_TO_HOME');
-                setInspectedRaksha({ ...inspectedRaksha, status: 'RETURNING', navMode: 'RETURN_TO_HOME' });
+                commandStore.setDroneStatus(inspectedDrone.droneId, 'RETURNING');
+                commandStore.setDroneNavMode(inspectedDrone.droneId, 'RETURN_TO_HOME');
+                setInspectedDrone({ ...inspectedDrone, status: 'RETURNING', navMode: 'RETURN_TO_HOME' });
               }}
               className="flex-1 py-1.5 bg-orange-50 hover:bg-orange-50 border border-orange-200 text-orange-700 rounded font-mono text-xs font-bold transition-colors"
             >
@@ -777,13 +777,13 @@ export const DisasterMap: React.FC<DisasterMapProps> = ({
             </button>
             <button
               onClick={() => {
-                const nextStatus = inspectedRaksha.status === 'ACTIVE' ? 'STANDBY' : 'ACTIVE';
-                commandStore.setRakshaStatus(inspectedRaksha.rakshaId, nextStatus);
-                setInspectedRaksha({ ...inspectedRaksha, status: nextStatus });
+                const nextStatus = inspectedDrone.status === 'ACTIVE' ? 'STANDBY' : 'ACTIVE';
+                commandStore.setDroneStatus(inspectedDrone.droneId, nextStatus);
+                setInspectedDrone({ ...inspectedDrone, status: nextStatus });
               }}
               className="flex-1 py-1.5 bg-hover hover:bg-hover border border-line-strong text-foreground rounded font-mono text-xs font-bold transition-colors"
             >
-              {inspectedRaksha.status === 'ACTIVE' ? 'Pause Mission' : 'Resume Mission'}
+              {inspectedDrone.status === 'ACTIVE' ? 'Pause Mission' : 'Resume Mission'}
             </button>
           </div>
         </div>

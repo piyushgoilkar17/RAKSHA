@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { DisasterMap } from '../map/DisasterMap';
 import { commandStore } from '../../services/store';
-import { Survivor, Hazard, Raksha } from '../../types';
+import { Survivor, Hazard, Drone } from '../../types';
 
 interface OverviewDashboardProps {
   onNavigate: (page: any) => void;
@@ -19,8 +19,8 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   onSelectSurvivor,
   onSelectHazard,
 }) => {
-  const rakshas = commandStore.rakshas;
-  const activeRakshas = rakshas.filter((d) => d.status === 'ACTIVE');
+  const drones = commandStore.drones;
+  const activeDrones = drones.filter((d) => d.status === 'ACTIVE');
   const survivors = commandStore.survivors;
   const criticalSurvivors = survivors.filter((s) => s.priorityLevel === 'CRITICAL' && s.rescueStatus !== 'Rescued');
   const hazards = commandStore.hazards.filter((h) => h.status !== 'Resolved');
@@ -31,23 +31,23 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
     <div className="p-4 md:p-6 space-y-6 max-w-[1700px] mx-auto text-foreground">
       {/* 6 Real-time KPI Metric Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 min-[1600px]:grid-cols-6 gap-3">
-        {/* Card 1: Active Rakshas */}
+        {/* Card 1: Active Drones */}
         <div 
-          onClick={() => onNavigate('rakshas')}
+          onClick={() => onNavigate('drones')}
           className="bg-panel border border-line hover:border-line-strong p-4 rounded-md cursor-pointer transition-colors group"
         >
           <div className="flex flex-wrap items-center justify-between gap-2 text-muted text-xs uppercase font-bold tracking-wide mb-1">
-            <span>ACTIVE RAKSHAS</span>
+            <span>ACTIVE DRONES</span>
             <Plane className="w-3.5 h-3.5 text-secondary group-hover:text-foreground transition-colors" />
           </div>
           <div className="flex items-baseline gap-1.5">
-            <span className="text-2xl font-bold font-mono text-foreground">{activeRakshas.length}</span>
-            <span className="text-[13px] text-green-700 font-mono font-bold">/{rakshas.length} ONLINE</span>
+            <span className="text-2xl font-bold font-mono text-foreground">{activeDrones.length}</span>
+            <span className="text-[13px] text-green-700 font-mono font-bold">/{drones.length} ONLINE</span>
           </div>
           <div className="w-full h-1 bg-hover mt-2 rounded overflow-hidden">
             <div 
               className="h-full bg-green-500 transition-all" 
-              style={{ width: `${(activeRakshas.length / Math.max(1, rakshas.length)) * 100}%` }}
+              style={{ width: `${(activeDrones.length / Math.max(1, drones.length)) * 100}%` }}
             />
           </div>
         </div>
@@ -210,7 +210,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                           : 'bg-orange-50 text-orange-700 border border-orange-200'
                       }`}
                     >
-                      {alert.severity} • {alert.rakshaId}
+                      {alert.severity} • {alert.droneId}
                     </span>
                     <span className="text-xs text-muted">{alert.createdAt}</span>
                   </div>
@@ -304,15 +304,15 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         </div>
       </div>
 
-      {/* Real-time Raksha Fleet Telemetry Section */}
+      {/* Real-time Drone Fleet Telemetry Section */}
       <div>
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 text-xs font-bold font-mono text-secondary uppercase tracking-wider">
             <Radio className="w-3.5 h-3.5 text-green-700" />
-            <span>REAL-TIME RAKSHA FLEET TELEMETRY (EDGE MESH MAVLINK)</span>
+            <span>REAL-TIME DRONE FLEET TELEMETRY (EDGE MESH MAVLINK)</span>
           </div>
           <button
-            onClick={() => onNavigate('rakshas')}
+            onClick={() => onNavigate('drones')}
             className="text-xs font-mono text-secondary hover:text-foreground font-bold flex items-center gap-1 uppercase transition-colors"
           >
             Manage Fleet <ArrowRight className="w-3 h-3" />
@@ -320,42 +320,42 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {rakshas.map((raksha) => (
+          {drones.map((drone) => (
             <div
-              key={raksha.rakshaId}
+              key={drone.droneId}
               className="bg-panel border border-line rounded p-3.5 relative overflow-hidden"
             >
               <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-line mb-2.5">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-extrabold text-sm text-foreground">{raksha.rakshaId}</span>
+                    <span className="font-mono font-extrabold text-sm text-foreground">{drone.droneId}</span>
                     <span
                       className={`text-[11px] px-1.5 py-0.2 rounded font-mono font-bold uppercase ${
-                        raksha.status === 'ACTIVE'
+                        drone.status === 'ACTIVE'
                           ? 'bg-green-50 text-green-700 border border-green-200'
                           : 'bg-orange-50 text-orange-700 border border-orange-200'
                       }`}
                     >
-                      {raksha.status}
+                      {drone.status}
                     </span>
                   </div>
-                  <div className="text-xs font-mono text-muted truncate max-w-[200px]">{raksha.name}</div>
+                  <div className="text-xs font-mono text-muted truncate max-w-[200px]">{drone.name}</div>
                 </div>
 
                 <div className="text-right">
                   <div className="flex items-center gap-1 font-mono text-xs font-bold text-foreground">
-                    <Battery className={`w-3.5 h-3.5 ${raksha.battery > 30 ? 'text-green-700' : 'text-red-700'}`} />
-                    <span>{raksha.battery}%</span>
+                    <Battery className={`w-3.5 h-3.5 ${drone.battery > 30 ? 'text-green-700' : 'text-red-700'}`} />
+                    <span>{drone.battery}%</span>
                   </div>
-                  <div className="text-[11px] font-mono text-muted">{raksha.signalStrength} dBm</div>
+                  <div className="text-[11px] font-mono text-muted">{drone.signalStrength} dBm</div>
                 </div>
               </div>
 
               {/* Progress bar for Battery */}
               <div className="w-full h-1 bg-hover rounded overflow-hidden mb-2.5">
                 <div 
-                  className={`h-full transition-all ${raksha.battery > 30 ? 'bg-green-500' : 'bg-red-600'}`}
-                  style={{ width: `${raksha.battery}%` }}
+                  className={`h-full transition-all ${drone.battery > 30 ? 'bg-green-500' : 'bg-red-600'}`}
+                  style={{ width: `${drone.battery}%` }}
                 />
               </div>
 
@@ -363,26 +363,26 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <div className="grid grid-cols-4 gap-1.5 text-center font-mono mb-2">
                 <div className="bg-inset p-1.5 rounded border border-line">
                   <div className="text-[11px] text-muted uppercase font-bold">ALT</div>
-                  <div className="text-xs font-bold text-foreground">{raksha.altitude}m</div>
+                  <div className="text-xs font-bold text-foreground">{drone.altitude}m</div>
                 </div>
                 <div className="bg-inset p-1.5 rounded border border-line">
                   <div className="text-[11px] text-muted uppercase font-bold">SPD</div>
-                  <div className="text-xs font-bold text-foreground">{raksha.speed}m/s</div>
+                  <div className="text-xs font-bold text-foreground">{drone.speed}m/s</div>
                 </div>
                 <div className="bg-inset p-1.5 rounded border border-line">
                   <div className="text-[11px] text-muted uppercase font-bold">HDG</div>
-                  <div className="text-xs font-bold text-foreground">{raksha.heading}°</div>
+                  <div className="text-xs font-bold text-foreground">{drone.heading}°</div>
                 </div>
                 <div className="bg-inset p-1.5 rounded border border-line">
                   <div className="text-[11px] text-muted uppercase font-bold">GPS</div>
-                  <div className="text-xs font-bold text-green-700">{raksha.gpsStatus}</div>
+                  <div className="text-xs font-bold text-green-700">{drone.gpsStatus}</div>
                 </div>
               </div>
 
               {/* Location & Sensor Status */}
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-muted pt-2 border-t border-line">
-                <span>LAT: {raksha.latitude.toFixed(4)} | LON: {raksha.longitude.toFixed(4)}</span>
-                <span className="text-secondary font-bold">{raksha.navMode}</span>
+                <span>LAT: {drone.latitude.toFixed(4)} | LON: {drone.longitude.toFixed(4)}</span>
+                <span className="text-secondary font-bold">{drone.navMode}</span>
               </div>
             </div>
           ))}

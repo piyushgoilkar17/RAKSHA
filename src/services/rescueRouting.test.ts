@@ -6,7 +6,7 @@ import type { Hazard } from '../types';
 const hq = { latitude: 45.44, longitude: 12.30 };
 const destination = { latitude: 45.44, longitude: 12.32 };
 const hazard: Hazard = {
-  hazardId: 'test-hazard', rakshaId: 'test-raksha', missionId: 'test-mission',
+  hazardId: 'test-hazard', droneId: 'test-drone', missionId: 'test-mission',
   hazardType: 'Fire', severity: 'HIGH', confidence: 95, status: 'Human Verified',
   latitude: 45.44, longitude: 12.31, radiusMeters: 100,
   recommendedResponse: '', imageUrl: '', detectedAt: '',
