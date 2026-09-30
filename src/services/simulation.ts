@@ -1,8 +1,8 @@
 import { commandStore } from './store';
 import { createSvgImageDataUrl } from './seedData';
 
-// Simulated flight waypoints for the 3 drones around Venice disaster zone
-const droneFlightLoops: Record<string, Array<{ lat: number; lng: number; alt: number }>> = {
+// Simulated flight waypoints for the 3 rakshas around Venice disaster zone
+const rakshaFlightLoops: Record<string, Array<{ lat: number; lng: number; alt: number }>> = {
   'RAKSHA-01': [
     { lat: 45.4405, lng: 12.3265, alt: 82 },
     { lat: 45.4440, lng: 12.3300, alt: 80 },
@@ -26,7 +26,7 @@ const droneFlightLoops: Record<string, Array<{ lat: number; lng: number; alt: nu
   ],
 };
 
-const dronePathIndices: Record<string, { current: number; progress: number }> = {
+const rakshaPathIndices: Record<string, { current: number; progress: number }> = {
   'RAKSHA-01': { current: 0, progress: 0 },
   'RAKSHA-02': { current: 0, progress: 0.3 },
   'RAKSHA-03': { current: 0, progress: 0.7 },
@@ -44,13 +44,13 @@ export function startSimulationEngine() {
     const speedMultiplier = commandStore.simulationSpeed;
     const step = 0.04 * speedMultiplier;
 
-    commandStore.drones.forEach((drone) => {
-      if (drone.status !== 'ACTIVE' && drone.status !== 'RETURNING') return;
+    commandStore.rakshas.forEach((raksha) => {
+      if (raksha.status !== 'ACTIVE' && raksha.status !== 'RETURNING') return;
 
-      const loop = droneFlightLoops[drone.droneId];
+      const loop = rakshaFlightLoops[raksha.rakshaId];
       if (!loop) return;
 
-      const pathState = dronePathIndices[drone.droneId];
+      const pathState = rakshaPathIndices[raksha.rakshaId];
       pathState.progress += step;
 
       if (pathState.progress >= 1) {
@@ -74,12 +74,12 @@ export function startSimulationEngine() {
       let heading = Math.round((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
 
       // Drain battery slightly
-      const newBattery = Math.max(5, +(drone.battery - 0.02 * speedMultiplier).toFixed(2));
-      const newDistance = +(drone.distanceTravelledKm + 0.015 * speedMultiplier).toFixed(2);
-      const newFlightTime = Math.round(drone.flightTimeMinutes + (0.1 * speedMultiplier));
+      const newBattery = Math.max(5, +(raksha.battery - 0.02 * speedMultiplier).toFixed(2));
+      const newDistance = +(raksha.distanceTravelledKm + 0.015 * speedMultiplier).toFixed(2);
+      const newFlightTime = Math.round(raksha.flightTimeMinutes + (0.1 * speedMultiplier));
       const currentSpeed = +(7.5 + Math.sin(Date.now() / 3000) * 1.5).toFixed(1);
 
-      commandStore.updateDroneTelemetry(drone.droneId, {
+      commandStore.updateRakshaTelemetry(raksha.rakshaId, {
         latitude: +newLat.toFixed(6),
         longitude: +newLng.toFixed(6),
         altitude: newAlt,
@@ -110,21 +110,21 @@ export function stopSimulationEngine() {
 
 function triggerSimulatedEdgeDetection() {
   const isSurvivor = Math.random() > 0.45;
-  const drones = commandStore.drones.filter((d) => d.status === 'ACTIVE');
-  if (drones.length === 0) return;
+  const rakshas = commandStore.rakshas.filter((d) => d.status === 'ACTIVE');
+  if (rakshas.length === 0) return;
 
-  const randomDrone = drones[Math.floor(Math.random() * drones.length)];
+  const randomRaksha = rakshas[Math.floor(Math.random() * rakshas.length)];
   const latOffset = (Math.random() - 0.5) * 0.006;
   const lngOffset = (Math.random() - 0.5) * 0.006;
-  const targetLat = +(randomDrone.latitude + latOffset).toFixed(5);
-  const targetLng = +(randomDrone.longitude + lngOffset).toFixed(5);
+  const targetLat = +(randomRaksha.latitude + latOffset).toFixed(5);
+  const targetLng = +(randomRaksha.longitude + lngOffset).toFixed(5);
 
   if (isSurvivor) {
     const confidence = Math.round(82 + Math.random() * 16);
     const peopleCount = Math.floor(1 + Math.random() * 4);
     commandStore.addDetection({
-      droneId: randomDrone.droneId,
-      missionId: randomDrone.currentMissionId,
+      rakshaId: randomRaksha.rakshaId,
+      missionId: randomRaksha.currentMissionId,
       category: 'People',
       detectionType: peopleCount > 1 ? `Survivor Group (x${peopleCount})` : 'Individual Survivor',
       confidence,
@@ -149,8 +149,8 @@ function triggerSimulatedEdgeDetection() {
     const severity = chosenType.includes('Electrical') || chosenType.includes('Fire') ? 'CRITICAL' : 'HIGH';
 
     commandStore.addDetection({
-      droneId: randomDrone.droneId,
-      missionId: randomDrone.currentMissionId,
+      rakshaId: randomRaksha.rakshaId,
+      missionId: randomRaksha.currentMissionId,
       category: 'Hazards',
       detectionType: chosenType,
       confidence,

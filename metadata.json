@@ -1,6 +1,6 @@
 {
   "name": "Raksha AI",
-  "description": "Autonomous disaster search-and-rescue drone command center with edge AI detection, real-time telemetry, live disaster mapping, and rescue prioritization.",
+  "description": "Autonomous disaster search-and-rescue raksha command center with edge AI detection, real-time telemetry, live disaster mapping, and rescue prioritization.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

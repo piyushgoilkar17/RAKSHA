@@ -8,15 +8,15 @@ export interface UserProfile {
   callsign: string;
 }
 
-export type DroneStatus = 'ACTIVE' | 'STANDBY' | 'RETURNING' | 'CHARGING' | 'OFFLINE' | 'EMERGENCY';
+export type RakshaStatus = 'ACTIVE' | 'STANDBY' | 'RETURNING' | 'CHARGING' | 'OFFLINE' | 'EMERGENCY';
 export type NavMode = 'GPS_MODE' | 'GPS_GUIDED' | 'GPS_DENIED_SLAM' | 'RETURN_TO_HOME' | 'MANUAL_OVERRIDE' | 'EMERGENCY_LAND';
 export type NavigationMode = NavMode;
 
-export interface Drone {
-  droneId: string;
+export interface Raksha {
+  rakshaId: string;
   model: string;
   name: string;
-  status: DroneStatus;
+  status: RakshaStatus;
   navMode: NavMode;
   battery: number; // 0-100%
   latitude: number;
@@ -75,7 +75,7 @@ export interface Mission {
   disasterType: DisasterType;
   status: MissionStatus;
   priority: MissionPriority;
-  assignedDroneIds: string[];
+  assignedRakshaIds: string[];
   searchPattern: SearchPattern;
   targetZone?: string;
   altitudeMeters?: number;
@@ -100,7 +100,7 @@ export type RescueStatus = 'Detected' | 'Verified' | 'Rescue Assigned' | 'Rescue
 export interface Survivor {
   survivorId: string;
   detectionId: string;
-  droneId: string;
+  rakshaId: string;
   missionId: string;
   latitude: number;
   longitude: number;
@@ -139,7 +139,7 @@ export type VerificationStatus = 'AI Detected' | 'Human Verified' | 'False Posit
 export interface Hazard {
   hazardId: string;
   detectionId: string;
-  droneId: string;
+  rakshaId: string;
   missionId: string;
   hazardType: HazardType;
   severity: HazardSeverity;
@@ -159,13 +159,13 @@ export type AlertStatus = 'NEW' | 'ACKNOWLEDGED' | 'ASSIGNED' | 'RESOLVED';
 export interface Alert {
   alertId: string;
   detectionId?: string;
-  alertType?: 'SURVIVOR_CRITICAL' | 'FIRE_HAZARD' | 'ELECTRICAL_LINE' | 'FLOOD_SURGE' | 'STRUCTURAL_COLLAPSE' | 'DRONE_BATTERY' | string;
+  alertType?: 'SURVIVOR_CRITICAL' | 'FIRE_HAZARD' | 'ELECTRICAL_LINE' | 'FLOOD_SURGE' | 'STRUCTURAL_COLLAPSE' | 'RAKSHA_BATTERY' | string;
   severity: AlertSeverity;
   message: string;
   recommendation: string;
   latitude: number;
   longitude: number;
-  droneId: string;
+  rakshaId: string;
   status: AlertStatus;
   createdAt: string;
   acknowledgedAt?: string;
@@ -178,7 +178,7 @@ export type EmergencyAlert = Alert;
 
 export interface Detection {
   detectionId: string;
-  droneId: string;
+  rakshaId: string;
   missionId: string;
   category: 'People' | 'Hazards';
   detectionType: string;
@@ -208,7 +208,7 @@ export interface MissionReport {
   summary: {
     disasterType: string;
     surveyedAreaKm2: number;
-    activeDronesCount: number;
+    activeRakshasCount: number;
     survivorsDetected: number;
     criticalSurvivors: number;
     hazardsDetected: number;

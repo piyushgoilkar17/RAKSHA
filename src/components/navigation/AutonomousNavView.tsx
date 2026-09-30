@@ -7,11 +7,11 @@ import { commandStore } from '../../services/store';
 import { NavigationMode } from '../../types';
 
 export const AutonomousNavView: React.FC = () => {
-  const [activeDroneId, setActiveDroneId] = useState<string>(commandStore.drones[0]?.droneId || 'RAKSHA-01');
-  const drone = commandStore.drones.find((d) => d.droneId === activeDroneId) || commandStore.drones[0];
+  const [activeRakshaId, setActiveRakshaId] = useState<string>(commandStore.rakshas[0]?.rakshaId || 'RAKSHA-01');
+  const raksha = commandStore.rakshas.find((d) => d.rakshaId === activeRakshaId) || commandStore.rakshas[0];
 
   const handleSetNavMode = (mode: NavigationMode) => {
-    commandStore.setDroneNavMode(drone.droneId, mode);
+    commandStore.setRakshaNavMode(raksha.rakshaId, mode);
   };
 
   // 360-Degree Obstacle Sensor Proximity (Simulated Real-time LiDAR & Sonar Array)
@@ -24,7 +24,7 @@ export const AutonomousNavView: React.FC = () => {
     { dir: 'REAR-LEFT', distMeters: 8.8, status: 'CLEAR', icon: '↙' },
     { dir: 'LEFT', distMeters: 4.5, status: 'CAUTION', icon: '◀' },
     { dir: 'FRONT-LEFT', distMeters: 5.9, status: 'CLEAR', icon: '↖' },
-    { dir: 'ALTITUDE / GROUND', distMeters: drone.altitude, status: 'CLEAR', icon: '⬇' },
+    { dir: 'ALTITUDE / GROUND', distMeters: raksha.altitude, status: 'CLEAR', icon: '⬇' },
   ];
 
   const reroutingLogs = [
@@ -53,20 +53,20 @@ export const AutonomousNavView: React.FC = () => {
           </p>
         </div>
 
-        {/* Drone Select */}
+        {/* Raksha Select */}
         <div className="flex items-center gap-1.5 bg-inset p-1.5 rounded border border-line">
-          <span className="text-xs text-muted uppercase px-1 font-bold">INSPECT DRONE:</span>
-          {commandStore.drones.map((d) => (
+          <span className="text-xs text-muted uppercase px-1 font-bold">INSPECT RAKSHA:</span>
+          {commandStore.rakshas.map((d) => (
             <button
-              key={d.droneId}
-              onClick={() => setActiveDroneId(d.droneId)}
+              key={d.rakshaId}
+              onClick={() => setActiveRakshaId(d.rakshaId)}
               className={`px-2.5 py-1 rounded font-bold transition-colors ${
-                activeDroneId === d.droneId
+                activeRakshaId === d.rakshaId
                   ? 'bg-red-600 text-foreground'
                   : 'text-muted hover:text-foreground'
               }`}
             >
-              {d.droneId}
+              {d.rakshaId}
             </button>
           ))}
         </div>
@@ -76,14 +76,14 @@ export const AutonomousNavView: React.FC = () => {
       <div className="bg-panel border border-line rounded p-4">
         <div className="text-xs font-bold text-secondary uppercase tracking-wider mb-3 flex items-center justify-between border-b border-line pb-2">
           <span>Flight Control & Autonomy Modes</span>
-          <span className="text-foreground font-bold">CURRENT ACTIVE: <span className="text-green-700">{drone.navMode}</span></span>
+          <span className="text-foreground font-bold">CURRENT ACTIVE: <span className="text-green-700">{raksha.navMode}</span></span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5">
           <button
             onClick={() => handleSetNavMode('GPS_GUIDED')}
             className={`p-3 rounded border text-left transition-all ${
-              drone.navMode === 'GPS_GUIDED'
+              raksha.navMode === 'GPS_GUIDED'
                 ? 'bg-hover border-line-strong text-foreground'
                 : 'bg-inset border-line text-muted hover:text-foreground'
             }`}
@@ -97,7 +97,7 @@ export const AutonomousNavView: React.FC = () => {
           <button
             onClick={() => handleSetNavMode('GPS_DENIED_SLAM')}
             className={`p-3 rounded border text-left transition-all ${
-              drone.navMode === 'GPS_DENIED_SLAM'
+              raksha.navMode === 'GPS_DENIED_SLAM'
                 ? 'bg-hover border-line-strong text-foreground'
                 : 'bg-inset border-line text-muted hover:text-foreground'
             }`}
@@ -111,7 +111,7 @@ export const AutonomousNavView: React.FC = () => {
           <button
             onClick={() => handleSetNavMode('RETURN_TO_HOME')}
             className={`p-3 rounded border text-left transition-all ${
-              drone.navMode === 'RETURN_TO_HOME'
+              raksha.navMode === 'RETURN_TO_HOME'
                 ? 'bg-hover border-orange-500 text-orange-700'
                 : 'bg-inset border-line text-muted hover:text-foreground'
             }`}
@@ -125,7 +125,7 @@ export const AutonomousNavView: React.FC = () => {
           <button
             onClick={() => handleSetNavMode('MANUAL_OVERRIDE')}
             className={`p-3 rounded border text-left transition-all ${
-              drone.navMode === 'MANUAL_OVERRIDE'
+              raksha.navMode === 'MANUAL_OVERRIDE'
                 ? 'bg-hover border-green-600 text-green-700'
                 : 'bg-inset border-line text-muted hover:text-foreground'
             }`}
@@ -139,7 +139,7 @@ export const AutonomousNavView: React.FC = () => {
           <button
             onClick={() => handleSetNavMode('EMERGENCY_LAND')}
             className={`p-3 rounded border text-left transition-all ${
-              drone.navMode === 'EMERGENCY_LAND'
+              raksha.navMode === 'EMERGENCY_LAND'
                 ? 'bg-red-50 border-red-600 text-red-700'
                 : 'bg-inset border-line text-muted hover:text-foreground'
             }`}
@@ -184,7 +184,7 @@ export const AutonomousNavView: React.FC = () => {
               }}
             />
 
-            {/* Drone Center Core */}
+            {/* Raksha Center Core */}
             <div className="relative z-10 w-6 h-6 rounded-full bg-white text-black font-bold flex items-center justify-center shadow-lg text-[11px]">
               ▲
             </div>

@@ -1,8 +1,8 @@
 import { commandStore } from './store';
-import { Drone, Detection, Alert } from '../types';
+import { Raksha, Detection, Alert } from '../types';
 
 export interface TelemetryPayload {
-  droneId: string;
+  rakshaId: string;
   timestamp: string;
   latitude: number;
   longitude: number;
@@ -13,11 +13,11 @@ export interface TelemetryPayload {
   signalStrength: number;
   gpsStatus: 'LOCKED' | 'RTK_FIX' | 'DEGRADED' | 'DENIED';
   imuStatus: 'CALIBRATED' | 'ALIGNING' | 'ERROR';
-  navMode: Drone['navMode'];
+  navMode: Raksha['navMode'];
 }
 
 export interface DetectionPayload {
-  droneId: string;
+  rakshaId: string;
   missionId: string;
   category: 'People' | 'Hazards';
   detectionType: string;
@@ -36,24 +36,24 @@ export interface DetectionPayload {
   };
 }
 
-export interface DroneCommandPayload {
+export interface RakshaCommandPayload {
   commandId: string;
-  droneId: string;
+  rakshaId: string;
   action: 'RTH' | 'HOLD' | 'RESUME' | 'EMERGENCY_LAND' | 'WAYPOINT_GOTO' | 'THERMAL_SWEEP';
   params?: Record<string, any>;
   issuedAt: string;
   issuedBy: string;
 }
 
-export class DroneGatewayService {
+export class RakshaGatewayService {
   public static protocol: 'EDGE_GATEWAY_MOCK_SIMULATOR' | 'MQTT_BROKER' | 'REST_UPLINK' = 'EDGE_GATEWAY_MOCK_SIMULATOR';
 
   /**
-   * Called by edge drone computing unit to stream current telemetry
+   * Called by edge raksha computing unit to stream current telemetry
    */
   public static async sendTelemetry(payload: TelemetryPayload): Promise<{ success: boolean; latencyMs: number }> {
     const start = performance.now();
-    commandStore.updateDroneTelemetry(payload.droneId, {
+    commandStore.updateRakshaTelemetry(payload.rakshaId, {
       latitude: payload.latitude,
       longitude: payload.longitude,
       altitude: payload.altitude,
@@ -74,7 +74,7 @@ export class DroneGatewayService {
    */
   public static async submitDetection(payload: DetectionPayload): Promise<{ detectionId: string; status: string }> {
     commandStore.addDetection({
-      droneId: payload.droneId,
+      rakshaId: payload.rakshaId,
       missionId: payload.missionId,
       category: payload.category,
       detectionType: payload.detectionType,
@@ -101,25 +101,25 @@ export class DroneGatewayService {
     });
   }
 
-  public static async updateDroneStatus(droneId: string, status: Drone['status']): Promise<void> {
-    commandStore.setDroneStatus(droneId, status);
+  public static async updateRakshaStatus(rakshaId: string, status: Raksha['status']): Promise<void> {
+    commandStore.setRakshaStatus(rakshaId, status);
   }
 
   public static async updateMissionStatus(missionId: string, status: any): Promise<void> {
     commandStore.updateMissionStatus(missionId, status);
   }
 
-  public static async receiveDroneCommand(cmd: DroneCommandPayload): Promise<{ acknowledged: boolean; timestamp: string }> {
+  public static async receiveRakshaCommand(cmd: RakshaCommandPayload): Promise<{ acknowledged: boolean; timestamp: string }> {
     if (cmd.action === 'RTH') {
-      commandStore.setDroneStatus(cmd.droneId, 'RETURNING');
-      commandStore.setDroneNavMode(cmd.droneId, 'RETURN_TO_HOME');
+      commandStore.setRakshaStatus(cmd.rakshaId, 'RETURNING');
+      commandStore.setRakshaNavMode(cmd.rakshaId, 'RETURN_TO_HOME');
     } else if (cmd.action === 'HOLD') {
-      commandStore.setDroneStatus(cmd.droneId, 'STANDBY');
+      commandStore.setRakshaStatus(cmd.rakshaId, 'STANDBY');
     } else if (cmd.action === 'RESUME') {
-      commandStore.setDroneStatus(cmd.droneId, 'ACTIVE');
-      commandStore.setDroneNavMode(cmd.droneId, 'GPS_MODE');
+      commandStore.setRakshaStatus(cmd.rakshaId, 'ACTIVE');
+      commandStore.setRakshaNavMode(cmd.rakshaId, 'GPS_MODE');
     } else if (cmd.action === 'EMERGENCY_LAND') {
-      commandStore.setDroneStatus(cmd.droneId, 'EMERGENCY');
+      commandStore.setRakshaStatus(cmd.rakshaId, 'EMERGENCY');
     }
     return { acknowledged: true, timestamp: new Date().toISOString() };
   }
@@ -133,9 +133,9 @@ export class DroneGatewayService {
     return dataUrlOrBlob;
   }
 
-  public static async pushTelemetry(droneId: string, updates: Partial<Drone>): Promise<void> {
-    commandStore.updateDroneTelemetry(droneId, updates);
+  public static async pushTelemetry(rakshaId: string, updates: Partial<Raksha>): Promise<void> {
+    commandStore.updateRakshaTelemetry(rakshaId, updates);
   }
 }
 
-export const droneGateway = DroneGatewayService;
+export const rakshaGateway = RakshaGatewayService;

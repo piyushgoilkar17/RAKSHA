@@ -133,7 +133,7 @@ export const SurvivorsView: React.FC<SurvivorsViewProps> = ({ onFocusOnMap }) =>
                   )}
                 </div>
 
-                <span className="text-[13px] text-muted font-mono">{surv.droneId}</span>
+                <span className="text-[13px] text-muted font-mono">{surv.rakshaId}</span>
               </div>
 
               {illustration ? (

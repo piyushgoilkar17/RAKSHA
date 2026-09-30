@@ -39,11 +39,11 @@ export const HazardsView: React.FC = () => {
     { name: 'Low', value: severityCounts.LOW, color: '#525252' },
   ];
 
-  const droneDistribution: Record<string, number> = {};
+  const rakshaDistribution: Record<string, number> = {};
   hazards.forEach((h) => {
-    droneDistribution[h.droneId] = (droneDistribution[h.droneId] || 0) + 1;
+    rakshaDistribution[h.rakshaId] = (rakshaDistribution[h.rakshaId] || 0) + 1;
   });
-  const droneChartData = Object.entries(droneDistribution).map(([drone, count]) => ({ drone, count }));
+  const rakshaChartData = Object.entries(rakshaDistribution).map(([raksha, count]) => ({ raksha, count }));
 
   return (
     <div className="p-4 space-y-4 max-w-[1700px] mx-auto text-foreground font-sans">
@@ -171,7 +171,7 @@ export const HazardsView: React.FC = () => {
                 <th className="p-2.5">Type</th>
                 <th className="p-2.5">Severity</th>
                 <th className="p-2.5">AI Conf</th>
-                <th className="p-2.5">Detecting Drone</th>
+                <th className="p-2.5">Detecting Raksha</th>
                 <th className="p-2.5">Recommended Action</th>
                 <th className="p-2.5">Status</th>
                 <th className="p-2.5 text-right">Actions</th>
@@ -194,7 +194,7 @@ export const HazardsView: React.FC = () => {
                     </span>
                   </td>
                   <td className="p-2.5 text-red-700 font-bold">{h.confidence}%</td>
-                  <td className="p-2.5 text-secondary">{h.droneId}</td>
+                  <td className="p-2.5 text-secondary">{h.rakshaId}</td>
                   <td className="p-2.5 text-secondary max-w-xs truncate text-[13px] font-sans">
                     {h.recommendedResponse}
                   </td>

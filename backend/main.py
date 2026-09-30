@@ -6,7 +6,7 @@ from backend.classifier import classify_image
 
 # Create FastAPI application
 app = FastAPI(
-    title="AeroRescue AI Backend",
+    title="Raksha AI Backend",
     version="1.0.0"
 )
 
@@ -31,7 +31,7 @@ app.add_middleware(
 def health_check():
     return {
         "status": "ok",
-        "service": "AeroRescue AI"
+        "service": "Raksha AI"
     }
 
 
@@ -41,7 +41,7 @@ def health_check():
 @app.get("/")
 def root():
     return {
-        "message": "AeroRescue AI Backend is running",
+        "message": "Raksha AI Backend is running",
         "status": "online",
         "version": "1.0.0",
         "endpoints": {
