@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { WifiOff, ChevronDown } from 'lucide-react';
 import { commandStore } from '../../services/store';
@@ -54,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateToAlerts }) => {
           </div>
           <div>
             <h1 className="text-lg md:text-xl font-bold tracking-tight leading-none text-foreground">
-              RAKSHA AI
+              <Link to="/" aria-label="RakshaAI home">RAKSHA AI</Link>
             </h1>
             <p className="text-[11px] md:text-xs text-secondary uppercase tracking-wide leading-tight mt-0.5">
               Autonomous Disaster Command Center

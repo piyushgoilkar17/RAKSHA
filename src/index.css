@@ -1,9 +1,12 @@
-@import "tailwindcss";
+@import "tailwindcss" source(".");
+@import "tw-animate-css";
+@import "./landing/vendor/shadcn-tailwind-4.13.0.css";
+@import "./landing/landing.css";
 
-@theme {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+@theme inline {
+  --font-sans: var(--surface-font, "Plus Jakarta Sans"), ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --color-foreground: #182333;
+  --color-foreground: var(--foreground, #182333);
   --color-hover: #e8edf3;
   --color-canvas: #f5f7fa;
   --color-shell: #ffffff;
@@ -11,9 +14,25 @@
   --color-inset: #f1f4f8;
   --color-line: #dce2e9;
   --color-line-strong: #b7c1ce;
-  --color-muted: #596579;
-  --color-secondary: #40516a;
+  --color-muted: var(--muted, #596579);
+  --color-secondary: var(--secondary, #40516a);
 }
+
+@theme inline {
+  --color-background: var(--background);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+html[data-surface="landing"] { --surface-font: Inter; }
 
 @layer base {
   :root { color-scheme: light; }

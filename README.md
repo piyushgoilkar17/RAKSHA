@@ -1,3 +1,31 @@
+## Run the website locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000 for the landing page. Launch Dashboard navigates to
+http://localhost:3000/dashboard without reloading the document. The dashboard's
+brand links back home. `/landing` redirects to `/` for older bookmarks.
+
+There is one React app, one npm dependency setup, and one Vite build:
+
+- `src/main.tsx`: application entry and BrowserRouter.
+- `src/routes.tsx`: page routes, loading/error states, page titles, and not-found page.
+- `src/landing/`: landing page, UI components, and scoped styles.
+- `src/App.tsx` and `src/components/`: dashboard and its views.
+- `src/services/`: dashboard data and service integrations.
+- `public/landing-assets/`: local landing imagery and fonts.
+- `docs/landing/`: preserved landing design and product references.
+
+`npm run build` produces `dist/`; `npm run preview` serves that build locally.
+`npm test` checks routing and rescue routing; `npm run lint` checks TypeScript.
+Production hosting must serve existing assets normally and rewrite page URLs
+such as `/dashboard` to `index.html` (the standard SPA fallback).
+The Vite development and preview servers already support this.
+
+
 # Disaster Response Autonomous Drone System
 
 > **Status:** Active development / validated prototype  
