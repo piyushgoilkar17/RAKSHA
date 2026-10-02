@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs";
 const DroneViewer = lazy(() => import("./DroneViewer"));
 const steps = [
@@ -41,9 +42,9 @@ export default function HeroDfr() {
           potential survivors, maps hazards, and shares critical information.{" "}
           <strong>A clearer picture for a faster, coordinated response.</strong>
         </p>
-        <a className="explore-3d-link" href="#mission">
-          Explore the aircraft in 3D
-        </a>
+        <Link className="hero-dashboard-link" to="/dashboard">
+          Launch Dashboard
+        </Link>
       </div>
     </section>
   );

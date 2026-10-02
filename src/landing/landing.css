@@ -1437,22 +1437,23 @@ html[data-surface="landing"] .hero-centered h1 > span {
 html[data-surface="landing"] .hero-centered .hero-paragraph {
   max-width: 70ch;
 }
-html[data-surface="landing"] .explore-3d-link {
+html[data-surface="landing"] .hero-dashboard-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-top: 30px;
-  padding: 15px 24px;
-  min-height: 48px;
-  background: #193c53;
+  padding: 28px 32px;
+  min-height: 88px;
+  max-width: 100%;
+  background: #192d3a;
   color: #fff;
-  border-radius: 8px;
-  font-size: 15px;
+  border-radius: 10px;
+  font-size: 24px;
+  line-height: 32px;
   font-weight: 600;
-  box-shadow: 0 9px 20px -10px #193c5380;
 }
-html[data-surface="landing"] .explore-3d-link:hover {
-  background: #285d7b;
+html[data-surface="landing"] .hero-dashboard-link:hover {
+  background: #304b5e;
 }
 html[data-surface="landing"] .response-banner {
   background: #dfedf7;
