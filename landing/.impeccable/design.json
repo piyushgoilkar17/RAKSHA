@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T10:16:43Z",
+  "title": "Design System: RakshaAI",
+  "extensions": {
+    "colorMeta": {
+      "action": { "role": "primary", "displayName": "Slate action" },
+      "amber-tab": { "role": "secondary", "displayName": "Amber selection" },
+      "studio-floor": { "role": "neutral", "displayName": "Matte studio floor" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Centered display", "purpose": "Main landing heading; CSS weight 650 with bundled static font faces." },
+      "intro": { "displayName": "Bold introduction", "purpose": "Centered introductory copy, maximum 70ch." }
+    },
+    "shadows": [
+      { "name": "studio-elevation", "value": "0 20px 45px -24px #18364c65", "purpose": "Explorer shell; maps to --studio-elevation." },
+      { "name": "hardware", "value": "0 20px 35px -23px #28465b77, inset 0 1px 0 #fff", "purpose": "Physical elevation of hardware cards." },
+      { "name": "toolbar", "value": "0 8px 22px -12px #193c5366", "purpose": "Floating manipulation control groups." },
+      { "name": "dashboard", "value": "0 16px 27px -15px #18364c88, inset 0 1px 0 #7396ad", "purpose": "Large dashboard action." }
+    ],
+    "motion": [
+      { "name": "control-transition", "value": "background 0.2s, color 0.2s, opacity 0.2s", "purpose": "Links and buttons; disabled by reduced-motion CSS." },
+      { "name": "mission-reveal", "value": "reveal .35s ease", "purpose": "Mission detail changes; disabled by reduced-motion CSS." },
+      { "name": "orbit-default", "value": "off", "purpose": "Manual rotation first; explicit auto-rotate toggle only." },
+      { "name": "orbit-speed", "value": "0.8", "purpose": "Three.js OrbitControls autoRotateSpeed; not a CSS duration." }
+    ],
+    "breakpoints": [
+      { "name": "container-compact", "value": "1250px" },
+      { "name": "studio-compact", "value": "1000px" },
+      { "name": "studio-stacked", "value": "700px" }
+    ],
+    "implementationNotes": [
+      "Extracted from current code; no live panel review was performed for this documentation pass.",
+      "Viewer is dynamically imported with ssr:false; engine imports begin at a 250px intersection root margin.",
+      "Renderer draws only when visible and document is not hidden, but its animation loop remains scheduled.",
+      "Reduced-motion CSS removes animations, transitions, smooth scrolling and base card tilt; the middle card has a more specific transform rule. Explicit WebGL auto rotation remains available.",
+      "Procedural geometry is visibly labeled 3D concept model; no validated CAD or flight specifications were supplied."
+    ]
+  },
+  "components": [
+    {
+      "name": "Explore action",
+      "kind": "button",
+      "refersTo": "explore-action",
+      "description": "Primary entry to the aircraft explorer.",
+      "html": "<a class=\"ds-explore\" href=\"#mission\">Explore the aircraft</a>",
+      "css": ".ds-explore{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:15px 24px;border-radius:8px;background:#193c53;color:#fff;font:600 15px Inter,Arial,Helvetica,sans-serif;text-decoration:none;box-shadow:0 9px 20px -10px #193c5380;transition:background .2s,color .2s,opacity .2s}.ds-explore:hover{background:#285d7b}.ds-explore:focus-visible{outline:3px solid #df7b46;outline-offset:5px}@media(prefers-reduced-motion:reduce){.ds-explore{transition:none}}"
+    },
+    {
+      "name": "Viewer preset",
+      "kind": "button",
+      "refersTo": "viewer-control",
+      "description": "Compact preset control inside a floating white toolbar.",
+      "html": "<div class=\"ds-toolbar\"><button class=\"ds-view\">Front</button><button class=\"ds-view\">Top</button></div>",
+      "css": ".ds-toolbar{display:inline-flex;gap:3px;padding:5px;border-radius:10px;background:#fff;box-shadow:0 8px 22px -12px #193c5366}.ds-view{display:inline-flex;align-items:center;justify-content:center;min-width:40px;min-height:40px;padding:7px 10px;border:0;border-radius:6px;background:transparent;color:#264960;font:600 13px Inter,Arial,Helvetica,sans-serif;cursor:pointer;transition:background .2s,color .2s,opacity .2s}.ds-view:hover,.ds-view[aria-pressed=true]{background:#e1edf4}.ds-view:focus-visible{outline:3px solid #df7b46;outline-offset:5px}.ds-view:disabled{opacity:.4;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-view{transition:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Aerospace product studio",
+    "overview": "Light enterprise surfaces, slate-blue structure and restrained amber markers frame a directly manipulable concept aircraft. Real object shading and soft physical elevation make the aircraft and hardware tangible. This records the implemented system from code.",
+    "keyCharacteristics": ["Centered bold introduction", "Matte studio floor", "Dark mission panel", "Direct aircraft manipulation", "Elevated hardware cards"],
+    "rules": [],
+    "dos": ["Keep the visible concept disclaimer and accessible controls.", "Keep movement user-initiated and rendering visibility-gated.", "Preserve the simple landing structure and three hardware cards."],
+    "donts": ["Do not present procedural geometry as validated CAD.", "Do not restore deleted detailed copy or capability sections.", "Do not imply dashboard or sign-in connectivity before connection."]
+  }
+}
